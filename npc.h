@@ -10,6 +10,7 @@
 #define npc_h
 
 #include <iostream>
+#include <string>
 #include "info.h"
 
 
@@ -18,12 +19,15 @@ protected:
     int hp;
     int atk;
     int def;
+    std::string type;
 public:
     int gethp();
     int getatk();
     int getdef();
+    void changeatk(int effect);
+    void changedef(int effect);
     void changehp(int dmg);
-    npc(int h, int a, int d);
+    npc(int h, int a, int d, std::string t);
     ~npc();
 };
 

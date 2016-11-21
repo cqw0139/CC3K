@@ -8,4 +8,4 @@
 
 #include "orc.h"
 
-orc::orc(): npc(180,30,25) {}
+orc::orc(): npc(180,30,25,"orc") {}

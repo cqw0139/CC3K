@@ -7,4 +7,4 @@
 //
 
 #include "goblin.h"
-goblin::goblin(): pc(110,15,20) {}
+goblin::goblin(): pc(110,15,20, "goblin") {}

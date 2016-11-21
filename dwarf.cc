@@ -8,4 +8,4 @@
 
 #include "dwarf.h"
 
-dwarf::dwarf(): npc(100,20,30) {}
+dwarf::dwarf(): npc(100,20,30,"dwarf") {}

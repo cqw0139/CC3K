@@ -7,4 +7,4 @@
 //
 
 #include "troll.h"
-troll::troll(): pc(120,25,15) {}
+troll::troll(): pc(120,25,15,"troll") {}

@@ -7,4 +7,4 @@
 //
 
 #include "vampire.h"
-vampire::vampire(): pc(50,25,25) {}
+vampire::vampire(): pc(50,25,25,"vampire") {}
