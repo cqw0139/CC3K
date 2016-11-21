@@ -24,6 +24,7 @@ public:
     int gethp();
     int getatk();
     int getdef();
+    std::string gettype();
     void changeatk(int effect);
     void changedef(int effect);
     void changehp(int dmg);

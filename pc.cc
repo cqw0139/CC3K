@@ -10,13 +10,17 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
 pc::pc(int h, int a, int d, string t):
 hp(h),
 atk(a),
 def(d),
-type(t){}
+type(t),
+maxhp(h),
+gold(0)
+{}
 
 int pc::gethp(){
     return hp;
@@ -32,9 +36,24 @@ int pc::getdef(){
 
 void pc::beattack(npc* enermy){
     int eatk = enermy->getatk();
+    string etype = enermy->gettype();
     float dmg = 0;
     dmg = eatk*100.0/(100.0 + def);
+    if((etype == "orc")&&(type == "goblin")){
+        dmg = dmg * 1.5;
+    }
     dmg = ceil(dmg);
+    int miss = rand() % 2;
+    if(miss == 0){
+        dmg = 0;
+    }
+    if(etype == "elf"){
+        if(type == "drow"){
+        }
+        else{
+            changehp(dmg);
+        }
+    }
     changehp(dmg);
 }
 
@@ -43,6 +62,17 @@ void pc::changehp(int damage){
     if(hp < 0){
         hp = 0;
     }
+    if(hp > maxhp){
+        if(type == "vampire"){
+        }
+        else{
+            hp = maxhp;
+        }
+    }
+}
+
+string pc::gettype(){
+    return type;
 }
 
 void pc::changeatk(int effect){
@@ -61,15 +91,33 @@ void pc::changedef(int effect){
 
 void pc::attack(npc* enermy){
     int edef = enermy->getdef();
+    string etype = enermy->gettype();
     float dmg = 0;
     dmg = atk*100.0/(100.0 + edef);
+    if(type == "vampire"){
+        if(enermy->gettype() == "dwarf"){
+            changehp(5);
+        }
+        else{
+            changehp(-5);
+        }
+    }
     dmg = ceil(dmg);
+    if(etype == "halfling"){
+        int miss = rand() % 2;
+        if(miss == 0){
+            dmg = 0;
+        }
+    }
     enermy->changehp(dmg);
 }
 
 void pc::usepotion(potion* p){
     string typ = p->gettype();
     int effect = p->geteffect();
+    if(type == "drow"){
+        effect = effect * 1.5;
+    }
     if(typ == "RH"){
         changehp(effect);
     }

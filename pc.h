@@ -31,12 +31,15 @@ protected:
     int hp;
     int atk;
     int def;
+    int maxhp;
+    int gold;
     std::string type;
 public:
     void usepotion(potion*);
     int gethp();
     int getatk();
     int getdef();
+    std::string gettype();
     void changeatk(int effect);
     void changedef(int effect);
     void beattack(npc*);

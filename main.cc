@@ -19,13 +19,44 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    pc* p = new shade;
-    potion* a = new WD;
-    cout << p->gethp() << endl;
-    cout << p->getatk() << endl;
-    cout << p->getdef() << endl;
-    p->usepotion(a);
-    cout << p->gethp() << endl;
-    cout << p->getatk() << endl;
-    cout << p->getdef() << endl;
+    pc* p1 = new shade;
+    //pc* p2 = new goblin;
+    potion* a = new RH;
+    npc* n1 = new halfling;
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    p1->attack(n1);
+    
+    cout << n1->gethp() << endl;
+    p1->usepotion(a);
+    cout << n1->gethp() << endl;
+    /*cout << p2->gethp() << endl;
+    p2->beattack(n1);
+    cout << p2->gethp() << endl;
+    p2->usepotion(a);
+    cout << p2->gethp() << endl;*/
 }

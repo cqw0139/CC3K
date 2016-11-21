@@ -50,5 +50,9 @@ int npc::getdef(){
     return def;
 }
 
+string npc::gettype(){
+    return type;
+}
+
 npc::~npc(){
 }
