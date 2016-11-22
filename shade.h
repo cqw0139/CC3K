@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef shade_h
-#define shade_h
+#ifndef __shade_h__
+#define __shade_h__
 
 #include <iostream>
 #include "pc.h"

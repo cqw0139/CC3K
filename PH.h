@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef PH_h
-#define PH_h
+#ifndef __PH_h__
+#define __PH_h__
 
 #include <iostream>
 #include "potion.h"

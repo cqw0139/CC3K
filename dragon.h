@@ -6,14 +6,13 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef dragon_h
-#define dragon_h
+#ifndef __dragon_h__
+#define __dragon_h__
 
 #include <iostream>
 #include "npc.h"
 
 class dragon: public npc{
-
 public:
     dragon();
     ~dragon();

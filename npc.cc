@@ -10,18 +10,35 @@
 #include <string>
 using namespace std;
 
+npc::npc(int h, int a, int d, string t, int g):
+hp(h),
+atk(a),
+def(d),
+type(t),
+gold(g)
+{}
+
 npc::npc(int h, int a, int d, string t):
 hp(h),
 atk(a),
 def(d),
-type(t)
-{}
+type(t){
+    int g = rand() % 2 + 1;
+    gold = g;
+}
 
 void npc::setrow(int r){
     row = r;
 }
 void npc::setcol(int c){
     col = c;
+}
+
+void npc::setgold(int g){
+    gold = g;
+}
+int npc::getgold(){
+    return gold;
 }
 
 int npc::getrow(){

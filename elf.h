@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef elf_h
-#define elf_h
+#ifndef __elf_h__
+#define __elf_h__
 
 #include <iostream>
 #include "npc.h"

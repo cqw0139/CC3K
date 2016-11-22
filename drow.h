@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef drow_h
-#define drow_h
+#ifndef __drow_h__
+#define __drow_h__
 
 #include <iostream>
 #include "pc.h"

@@ -7,4 +7,4 @@
 //
 
 #include "merchant.h"
-merchant::merchant(): npc(30,70,5,"merchant") {}
+merchant::merchant(): npc(30,70,5,"merchant", 0) {}

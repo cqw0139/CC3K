@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef vampire_h
-#define vampire_h
+#ifndef __vampire_h__
+#define __vampire_h__
 
 #include <iostream>
 #include "pc.h"

@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef goblin_h
-#define goblin_h
+#ifndef __goblin_h__
+#define __goblin_h__
 
 #include <iostream>
 #include "pc.h"

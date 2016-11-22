@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef BD_h
-#define BD_h
+#ifndef __BD_h__
+#define __BD_h__
 
 #include <iostream>
 #include "potion.h"

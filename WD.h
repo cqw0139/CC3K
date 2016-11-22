@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef WD_h
-#define WD_h
+#ifndef __WD_h__
+#define __WD_h__
 
 #include <iostream>
 #include "potion.h"

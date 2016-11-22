@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef pc_h
-#define pc_h
+#ifndef __pc_h__
+#define __pc_h__
 
 #include <iostream>
 #include <string>

@@ -6,14 +6,13 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef merchant_h
-#define merchant_h
+#ifndef __merchant_h__
+#define __merchant_h__
 
 #include <iostream>
 #include "npc.h"
 
 class merchant: public npc{
-
 public:
     merchant();
     ~merchant();

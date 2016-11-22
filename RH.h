@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef RH_h
-#define RH_h
+#ifndef __RH_h__
+#define __RH_h__
 
 #include <iostream>
 #include "potion.h"

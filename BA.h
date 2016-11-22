@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef BA_h
-#define BA_h
+#ifndef __BA_h__
+#define __BA_h__
 
 #include <iostream>
 #include "potion.h"

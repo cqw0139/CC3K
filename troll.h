@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef troll_h
-#define troll_h
+#ifndef __troll_h__
+#define __troll_h__
 
 #include <iostream>
 #include "pc.h"

@@ -1,22 +1,23 @@
 //
-//  WA.hpp
+//  humanT.hpp
 //  cc3k
 //
 //  Created by ChengQiwei on 2016-11-21.
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef __WA_h__
-#define __WA_h__
+#ifndef __humanT_h__
+#define __humanT_h__
 
 #include <iostream>
-#include "potion.h"
 #include <string>
+#include "treasure.h"
 
 
-class WA: public potion{
+class htreasure:public treasure{
 public:
-    WA();
-    ~WA();
+    htreasure();
+    ~htreasure();
 };
+
 #endif

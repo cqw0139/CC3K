@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef info_h
-#define info_h
+#ifndef __info_h__
+#define __info_h__
 
 #include <iostream>
 #include <string>

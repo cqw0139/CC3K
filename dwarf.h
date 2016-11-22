@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef dwarf_h
-#define dwarf_h
+#ifndef __dwarf_h__
+#define __dwarf_h__
 
 #include <iostream>
 #include "npc.h"

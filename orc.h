@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef orc_h
-#define orc_h
+#ifndef __orc_h__
+#define __orc_h__
 
 #include <iostream>
 #include "npc.h"

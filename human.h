@@ -6,8 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#ifndef human_hpp
-#define human_hpp
+#ifndef __human_h__
+#define __human_h__
 
 #include <iostream>
 #include "npc.h"
