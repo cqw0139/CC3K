@@ -22,6 +22,21 @@ maxhp(h),
 gold(0)
 {}
 
+void pc::setrow(int r){
+    row = r;
+}
+void pc::setcol(int c){
+    col = c;
+}
+
+int pc::getrow(){
+    return row;
+}
+
+int pc::getcol(){
+    return col;
+}
+
 int pc::gethp(){
     return hp;
 }

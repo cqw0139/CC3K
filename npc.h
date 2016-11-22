@@ -19,8 +19,14 @@ protected:
     int hp;
     int atk;
     int def;
+    int row;
+    int col;
     std::string type;
 public:
+    void setrow(int r);
+    void setcol(int c);
+    int getrow();
+    int getcol();
     int gethp();
     int getatk();
     int getdef();

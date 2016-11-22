@@ -33,9 +33,15 @@ protected:
     int def;
     int maxhp;
     int gold;
+    int row;
+    int col;
     std::string type;
 public:
     void usepotion(potion*);
+    void setrow(int r);
+    void setcol(int c);
+    int getrow();
+    int getcol();
     int gethp();
     int getatk();
     int getdef();

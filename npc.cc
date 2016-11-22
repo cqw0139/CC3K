@@ -17,6 +17,21 @@ def(d),
 type(t)
 {}
 
+void npc::setrow(int r){
+    row = r;
+}
+void npc::setcol(int c){
+    col = c;
+}
+
+int npc::getrow(){
+    return row;
+}
+
+int npc::getcol(){
+    return col;
+}
+
 void npc::changehp(int damage){
     hp = hp - damage;
     if(hp < 0){
