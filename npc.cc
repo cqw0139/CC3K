@@ -29,6 +29,10 @@ hostile(host){
     gold = g;
 }
 
+void npc::sethostile(int h){
+    hostile = h;
+}
+
 void npc::setrow(int r){
     row = r;
 }

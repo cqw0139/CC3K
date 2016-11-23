@@ -25,6 +25,7 @@ protected:
     int hostile;
     std::string type;
 public:
+    void sethostile(int h);
     void setrow(int r);
     void setcol(int c);
     void setgold(int g);
