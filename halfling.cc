@@ -7,4 +7,4 @@
 //
 
 #include "halfling.h"
-halfling::halfling(): npc(100,15,20,"halfling") {}
+halfling::halfling(): npc(100,15,20,"halfling", 1) {}

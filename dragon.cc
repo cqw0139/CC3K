@@ -7,4 +7,5 @@
 //
 
 #include "dragon.h"
-dragon::dragon(): npc(150,20,20,"dragon", 0) {}
+
+dragon::dragon(): npc(150,20,20,"dragon", 0, 1) {}

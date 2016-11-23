@@ -8,4 +8,4 @@
 
 #include "elf.h"
 
-elf::elf(): npc(140,30,10,"elf") {}
+elf::elf(): npc(140,30,10,"elf", 1) {}

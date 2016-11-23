@@ -10,19 +10,21 @@
 #include <string>
 using namespace std;
 
-npc::npc(int h, int a, int d, string t, int g):
+npc::npc(int h, int a, int d, string t, int g, int host):
 hp(h),
 atk(a),
 def(d),
 type(t),
-gold(g)
+gold(g),
+hostile(host)
 {}
 
-npc::npc(int h, int a, int d, string t):
+npc::npc(int h, int a, int d, string t, int host):
 hp(h),
 atk(a),
 def(d),
-type(t){
+type(t),
+hostile(host){
     int g = rand() % 2 + 1;
     gold = g;
 }

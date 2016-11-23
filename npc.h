@@ -22,6 +22,7 @@ protected:
     int row;
     int col;
     int gold;
+    int hostile;
     std::string type;
 public:
     void setrow(int r);
@@ -33,12 +34,12 @@ public:
     int gethp();
     int getatk();
     int getdef();
-    std::string gettype();
+    std::string gettype() override;
     void changeatk(int effect);
     void changedef(int effect);
     void changehp(int dmg);
-    npc(int h, int a, int d, std::string t, int g);
-    npc(int h, int a, int d, std::string t);
+    npc(int h, int a, int d, std::string t, int g, int host);
+    npc(int h, int a, int d, std::string t, int host);
     ~npc();
 };
 
