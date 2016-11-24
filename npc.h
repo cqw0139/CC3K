@@ -29,6 +29,7 @@ public:
     void setrow(int r);
     void setcol(int c);
     void setgold(int g);
+    int gethostile();
     int getgold();
     int getrow();
     int getcol();

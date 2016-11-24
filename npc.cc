@@ -43,6 +43,11 @@ void npc::setcol(int c){
 void npc::setgold(int g){
     gold = g;
 }
+
+int npc::gethostile(){
+    return hostile;
+}
+
 int npc::getgold(){
     return gold;
 }
