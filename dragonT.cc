@@ -7,9 +7,8 @@
 //
 
 #include "dragonT.h"
-dragontreasure::dragontreasure():
-treasure(6,"T")
-{}
+
+dragontreasure::dragontreasure(): treasure(6,"G") {}
 
 dragon* dragontreasure::getprotector(){
     return protector;
