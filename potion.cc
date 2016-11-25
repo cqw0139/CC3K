@@ -12,8 +12,17 @@ using namespace std;
 
 potion::potion(int eff, std::string typ):
 effect(eff),
-type(typ)
+type(typ),
+whetherbeused(0)
 {}
+
+void potion::beused(){
+    whetherbeused = 1;
+}
+
+int potion::checkused(){
+    return whetherbeused;
+}
 
 string potion::gettype(){
     return type;

@@ -17,10 +17,13 @@ class potion: public info{
 protected:
     std::string type;
     int effect;
+    int whetherbeused;
 public:
     potion(int eff, std::string typ);
+    void beused();
+    int checkused();
     int geteffect();
-    std::string gettype();
+    std::string gettype() override;
     ~potion();
 };
 
