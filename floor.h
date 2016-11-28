@@ -112,6 +112,11 @@ public:
     
     void resetaction();
     
+    void settype(int r, int c, char type);
+    
+    void setroom(int r, int c, int num);
+    
+    void initBasicMap();
 
 	friend std::ostream &operator<<(std::ostream &out, floor &f);
     

@@ -232,14 +232,15 @@ void initstair(floor& f){
 }
 
 void init(floor& f){
-	f.init();
-	initpc(f);
-	initpotion(f);
-	//initdragon(f);
-	initnpc(f);
-	initstair(f);
-	inittreasure(f);
-	cout << f;
+    f.init();
+    f.initBasicMap();
+    initpc(f);
+    initpotion(f);
+    //initdragon(f);
+    initnpc(f);
+    initstair(f);
+    inittreasure(f);
+    cout << f;
 }
 
 void upstair(floor& f){

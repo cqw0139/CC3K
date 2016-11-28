@@ -158,380 +158,18 @@ void floor::initpc(int r, int c, pc* p){
 }
 
 void floor::init(){
-	for (int i = 0; i < 25; ++i)
-	{
-		theFloor.push_back(vector<cell>());
-		for (int j = 0; j < 79; ++j)
-		{
-			cell c;
-			// set the left and right bound
-			if(j == 0 || j == 78)
-				c.settype('v');
-			// set the first and the last row
-			if(i == 0 || i == 24){
-				if (j > 0 && j < 78)
-					c.settype('h');
-			}
-			// set the second and last second row
-			if(i == 1 || i == 23){
-				if (j > 0 && j< 78)
-					c.settype('b');
-			}
-			// set the third row
-			if (i == 2)
-			{
-				if (j == 2 || j == 29|| j == 38 || j == 62)
-					c.settype('v');
-				if ((j > 2 && j < 29)||(j > 38 && j < 62))
-					c.settype('h');
-				if (j == 1 || (j > 29 && j < 38)||(j > 62 && j < 78))
-					c.settype('b');
-			}
-			if (i == 3)
-			{
-				if (j == 2 || j == 29|| j == 38 || j == 62)
-					c.settype('v');
-				if ((j > 2 && j < 29)||(j > 38 && j < 62))
-					c.settype('p');
-				if (j > 2 && j < 29)
-					c.setroom(1);
-				if (j > 38 && j < 62)
-					c.setroom(2);
-				if (j == 1 || (j > 29 && j < 38)||(j > 62 && j < 78))
-					c.settype('b');
-			}
-			if (i == 4)
-			{
-				if (j == 2 || j == 62 || j == 70)
-					c.settype('v');
-				if (j == 29 || j == 38)
-					c.settype('d');
-				if ((j > 2 && j < 29)||(j > 38 && j < 62))
-					c.settype('p');
-				if (j > 2 && j < 29)
-					c.setroom(1);
-				if (j > 38 && j < 62)
-					c.setroom(2);
-				if (j > 29 && j < 38)
-					c.settype('c');
-				if (j > 62 && j < 70)
-					c.settype('h');
-				if (j == 1 || (j > 70 && j < 78))
-					c.settype('b');
-			}
-			if (i == 5)
-			{
-				if (j == 2 || j == 29 || j == 38 || j == 70 || j == 73)
-					c.settype('v');
-				if (j > 70 && j < 73)
-					c.settype('h');
-				if ((j > 2 && j < 29)||(j > 38 && j < 70))
-					c.settype('p');
-				if (j > 2 && j < 29)
-					c.setroom(1);
-				if (j > 38 && j < 70)
-					c.setroom(2);
-				if (j == 33)
-					c.settype('c');
-				if (j == 1 || (j > 29 && j < 33) || 
-					(j > 33 && j < 38) || (j > 73 && j < 78))
-					c.settype('b');
-			}
-			// the sixth row
-			if (i == 6)
-			{
-				if (j == 2 || j == 29 || j == 38 || j == 73 || j == 76)
-					c.settype('v');
-				if (j > 73 && j < 76)
-					c.settype('h');
-				if ((j > 2 && j < 29)||(j > 38 && j < 73))
-					c.settype('p');
-				if (j > 2 && j < 29)
-					c.setroom(1);
-				if (j > 38 && j < 73)
-					c.setroom(2);
-				if (j == 33)
-					c.settype('c');
-				if (j == 1 || (j > 29 && j < 33) || 
-					(j > 33 && j < 38) || j == 77)
-					c.settype('b');
-			}
-			// the seventh row
-			if (i == 7)
-			{
-				if (j == 2 || j == 29 || j == 38 || j == 60 || j == 76)
-					c.settype('v');
-				if ((j > 2 && j < 13) || (j > 13 && j < 29) || 
-					(j > 38 && j < 43) || (j > 43 && j < 60))
-					c.settype('h');
-				if (j > 60 && j < 76)
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j == 33)
-					c.settype('c');
-				if (j == 13 || j == 43)
-					c.settype('d');
-				if (j == 1 || (j > 29 && j < 33) || 
-					(j > 33 && j < 38) || j == 77)
-					c.settype('b');
-			}
-			// the eighth row
-			if (i == 8)
-			{
-				if (j == 60 || j == 76)
-					c.settype('v');
-				if (j > 60 && j < 76)
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j == 13 || (j > 30 && j < 44))
-					c.settype('c');
-				if ((j > 0 && j < 13) || (j > 13 && j < 31) || 
-					(j > 43 && j < 60) || j == 77)
-					c.settype('b');
-			}
-			// the ninth row
-			if (i == 9)
-			{
-				if (j == 37 || j == 50 || j == 60 || j == 76)
-					c.settype('v');
-				if ((j > 37 && j < 43)||(j > 43 && j < 50))
-					c.settype('h');
-				if (j > 60 && j < 76)
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j == 13 || j == 31)
-					c.settype('c');
-				if (j == 43)
-					c.settype('d');
-				if ((j > 0 && j < 13) || (j > 13 && j < 31) || 
-					(j > 31 && j < 37) || (j > 50 && j < 60) || 
-					j == 77)
-					c.settype('b');
-			}
-			// the tenth row
-			if (i == 10)
-			{
-				if (j == 37 || j == 50 || j == 60 || j == 76)
-					c.settype('v');
-				if ((j > 60 && j < 76) || (j > 37 && j < 50))
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j > 37 && j < 50)
-					c.setroom(3);
-				if (j == 13 || j == 31)
-					c.settype('c');
-				if ((j > 0 && j < 13) || (j > 13 && j < 31) || 
-					(j > 31 && j < 37) || (j > 50 && j < 60) || j == 77)
-					c.settype('b');
-			}
-			// the eleventh row
-			if (i == 11)
-			{
-				if (j == 37 || j == 50 || j == 76)
-					c.settype('v');
-				if ((j > 60 && j < 76) || (j > 37 && j < 50))
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j > 37 && j < 50)
-					c.setroom(3);
-				if ((j > 12 && j < 32) || (j > 52 && j < 60))
-					c.settype('c');
-				if (j == 60)
-					c.settype('d');
-				if ((j > 0 && j < 13) || (j > 31 && j < 37) || 
-					(j > 50 && j < 53) || j == 77)
-					c.settype('b');
-			}
-			// the twelvth row
-			if (i == 12)
-			{
-				if (j == 37 || j == 50 || j == 60 || j == 76)
-					c.settype('v');
-				if ((j > 60 && j < 76) || (j > 37 && j < 50))
-					c.settype('p');
-				if (j > 60 && j < 76)
-					c.setroom(2);
-				if (j > 37 && j < 50)
-					c.setroom(3);
-				if (j == 13 || j == 31 || j == 53)
-					c.settype('c');
-				if ((j > 0 && j < 13) || (j > 13 && j < 31) || 
-					(j > 31 && j < 37) || (j > 50 && j < 53) || 
-					(j > 53 && j < 60) || j == 77)
-					c.settype('b');
-			}
-			// the tirtheenth row
-			if (i == 13)
-			{
-				if (j == 37 || j == 50 || j == 60 || j == 76)
-					c.settype('v');
-				if ((j > 37 && j < 43) || (j > 43 && j < 50) ||
-					(j > 60 && j < 69) || (j > 69 && j < 76))
-					c.settype('h');
-				if (j == 13 || j == 31 || j == 53)
-					c.settype('c');
-				if (j == 43 || j == 69)
-					c.settype('d');
-				if ((j > 0 && j < 13) || (j > 13 && j < 31) || 
-					(j > 31 && j < 37) || (j > 50 && j < 53) || 
-					(j > 53 && j < 60) || j == 77)
-					c.settype('b');
-			}
-			if (i == 14)
-			{
-				if (j == 3 || j == 25)
-					c.settype('v');
-				if ((j > 3 && j < 13) || (j > 13 && j < 25))
-					c.settype('h');
-				if (j == 31 || j == 43 || j == 53 || j == 69)
-					c.settype('c');
-				if (j == 13)
-					c.settype('d');
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) || 
-					(j > 31 && j < 43) || (j > 43 && j < 53) || 
-					(j > 53 && j < 69) || (j > 69 && j < 78))
-					c.settype('b');
-			}
-			if (i == 15)
-			{
-				if (j == 3 || j == 25 || j == 64 || j == 76)
-					c.settype('v');
-				if ((j > 64 && j < 69) || (j > 69 && j < 76))
-					c.settype('h');
-				if (j == 31 || j == 43 || j == 53)
-					c.settype('c');
-				if (j == 69)
-					c.settype('d');
-				if (j > 3 && j < 25)
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) || 
-					(j > 31 && j < 43) || (j > 43 && j < 53) || 
-					(j > 53 && j < 64) || j == 77)
-					c.settype('b');
-			}
-			if (i == 16)
-			{
-				if (j == 3 || j == 25 || j == 64 || j == 76)
-					c.settype('v');
-				if (j > 30 && j < 54)
-					c.settype('c');
-				if ((j > 3 && j < 25) || (j > 64 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 64 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
-					(j > 53 && j < 64) || j == 77)
-					c.settype('b');
-			}
-			if (i == 17)
-			{
-				if (j == 3 || j == 25 || j == 64 || j == 76)
-					c.settype('v');
-				if (j == 31 || j == 43)
-					c.settype('c');
-				if ((j > 3 && j < 25) || (j > 64 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 64 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
-					(j > 31 && j < 43) || (j > 43 && j < 64) ||
-					j == 77)
-					c.settype('b');
-			}
-			if (i == 18)
-			{
-				if (j == 3 || j == 25 || j == 36 || j == 64 || j == 76)
-					c.settype('v');
-				if ((j > 36 && j < 43) || (j > 43 && j < 64))
-					c.settype('h');
-				if (j == 31)
-					c.settype('c');
-				if (j == 43)
-					c.settype('d');
-				if ((j > 3 && j < 25) || (j > 64 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 64 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
-					(j > 31 && j < 36) || j == 77)
-					c.settype('b');
-			}
-			if (i == 19)
-			{
-				if (j == 3 || j == 25 || j == 36 || j == 76)
-					c.settype('v');
-				if (j == 31)
-					c.settype('c');
-				if ((j > 3 && j < 25) || (j > 36 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 36 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
-					(j > 31 && j < 36) || j == 77)
-					c.settype('b');
-			}
-			if (i == 20)
-			{
-				if (j == 3 || j == 76)
-					c.settype('v');
-				if (j == 25 || j == 36)
-					c.settype('d');
-				if (j > 25 && j < 36)
-					c.settype('c');
-				if ((j > 3 && j < 25) || (j > 36 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 36 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || j == 77)
-					c.settype('b');
-			}
-			if (i == 21)
-			{
-				if (j == 3 || j == 25 || j == 36 || j == 76)
-					c.settype('v');
-				if ((j > 3 && j < 25) || (j > 36 && j < 76))
-					c.settype('p');
-				if (j > 3 && j < 25)
-					c.setroom(4);
-				if (j > 36 && j < 76)
-					c.setroom(5);
-				if ((j > 0 && j < 3) || (j > 25 && j < 36) || 
-					j == 77)
-					c.settype('b');
-			}
-			if (i == 22)
-			{
-				if (j == 3 || j == 25 || j == 36 || j == 76)
-					c.settype('v');
-				if ((j > 3 && j < 25) || (j > 36 && j < 76))
-					c.settype('h');
-				if ((j > 0 && j < 3) || (j > 25 && j < 36) || 
-					j == 77)
-					c.settype('b');
-			}
-			c.setpos(i, j);
-			theFloor[i].push_back(c);
-		}
-	}
-	maxnpc = 20;
-	maxpotion = 10;
+    for (int i = 0; i < 25; ++i)
+    {
+        theFloor.push_back(vector<cell>());
+        for (int j = 0; j < 79; ++j)
+        {
+            cell c;
+            c.setpos(i, j);
+            theFloor[i].push_back(c);
+        }
+    }
+    maxnpc = 20;
+    maxpotion = 10;
 }
 
 
@@ -796,7 +434,7 @@ void floor::movechar(int direction){
                 potion* p = static_cast<potion*>(in);
                 string potion = p->gettype();
                 cout << 1 << endl;
-                if(potion == "RH"){
+                if((potion == "RH")&&(p->usedRH == 1)){
                     action += "a " + potion;
                 }else if((potion == "BA")&&(p->usedBA == 1)){
                     action += "a " + potion;
@@ -1079,5 +717,387 @@ ostream &operator<<(ostream &out, floor &f){
 
 void floor::resetaction(){
     action = "";
+}
+
+void floor::initBasicMap()
+{
+    for (int i = 0; i < 25; ++i)
+    {
+        for (int j = 0; j < 79; ++j)
+        {
+            // set the left and right bound
+            if(j == 0 || j == 78)
+                settype(i, j, 'v');
+            // set the first and the last row
+            if(i == 0 || i == 24){
+                if (j > 0 && j < 78)
+                    settype(i, j, 'h');
+            }
+            // set the second and last second row
+            if(i == 1 || i == 23){
+                if (j > 0 && j< 78)
+                    settype(i, j, 'b');
+            }
+            // set the third row
+            if (i == 2)
+            {
+                if (j == 2 || j == 29|| j == 38 || j == 62)
+                    settype(i, j, 'v');
+                if ((j > 2 && j < 29)||(j > 38 && j < 62))
+                    settype(i, j, 'h');
+                if (j == 1 || (j > 29 && j < 38)||(j > 62 && j < 78))
+                    settype(i, j, 'b');
+            }
+            if (i == 3)
+            {
+                if (j == 2 || j == 29|| j == 38 || j == 62)
+                    settype(i, j, 'v');
+                if ((j > 2 && j < 29)||(j > 38 && j < 62))
+                    settype(i, j, 'p');
+                if (j > 2 && j < 29)
+                    setroom(i, j, 1);
+                if (j > 38 && j < 62)
+                    setroom(i, j, 2);
+                if (j == 1 || (j > 29 && j < 38)||(j > 62 && j < 78))
+                    settype(i, j, 'b');
+            }
+            if (i == 4)
+            {
+                if (j == 2 || j == 62 || j == 70)
+                    settype(i, j, 'v');
+                if (j == 29 || j == 38)
+                    settype(i, j, 'd');
+                if ((j > 2 && j < 29)||(j > 38 && j < 62))
+                    settype(i, j, 'p');
+                if (j > 2 && j < 29)
+                    setroom(i, j, 1);
+                if (j > 38 && j < 62)
+                    setroom(i, j, 2);
+                if (j > 29 && j < 38)
+                    settype(i, j, 'c');
+                if (j > 62 && j < 70)
+                    settype(i, j, 'h');
+                if (j == 1 || (j > 70 && j < 78))
+                    settype(i, j, 'b');
+            }
+            if (i == 5)
+            {
+                if (j == 2 || j == 29 || j == 38 || j == 70 || j == 73)
+                    settype(i, j, 'v');
+                if (j > 70 && j < 73)
+                    settype(i, j, 'h');
+                if ((j > 2 && j < 29)||(j > 38 && j < 70))
+                    settype(i, j, 'p');
+                if (j > 2 && j < 29)
+                    setroom(i, j, 1);
+                if (j > 38 && j < 70)
+                    setroom(i, j, 2);
+                if (j == 33)
+                    settype(i, j, 'c');
+                if (j == 1 || (j > 29 && j < 33) ||
+                    (j > 33 && j < 38) || (j > 73 && j < 78))
+                    settype(i, j, 'b');
+            }
+            // the sixth row
+            if (i == 6)
+            {
+                if (j == 2 || j == 29 || j == 38 || j == 73 || j == 76)
+                    settype(i, j, 'v');
+                if (j > 73 && j < 76)
+                    settype(i, j, 'h');
+                if ((j > 2 && j < 29)||(j > 38 && j < 73))
+                    settype(i, j, 'p');
+                if (j > 2 && j < 29)
+                    setroom(i, j, 1);
+                if (j > 38 && j < 73)
+                    setroom(i, j, 2);
+                if (j == 33)
+                    settype(i, j, 'c');
+                if (j == 1 || (j > 29 && j < 33) ||
+                    (j > 33 && j < 38) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the seventh row
+            if (i == 7)
+            {
+                if (j == 2 || j == 29 || j == 38 || j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 2 && j < 13) || (j > 13 && j < 29) ||
+                    (j > 38 && j < 43) || (j > 43 && j < 60))
+                    settype(i, j, 'h');
+                if (j > 60 && j < 76)
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j == 33)
+                    settype(i, j, 'c');
+                if (j == 13 || j == 43)
+                    settype(i, j, 'd');
+                if (j == 1 || (j > 29 && j < 33) ||
+                    (j > 33 && j < 38) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the eighth row
+            if (i == 8)
+            {
+                if (j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if (j > 60 && j < 76)
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j == 13 || (j > 30 && j < 44))
+                    settype(i, j, 'c');
+                if ((j > 0 && j < 13) || (j > 13 && j < 31) ||
+                    (j > 43 && j < 60) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the ninth row
+            if (i == 9)
+            {
+                if (j == 37 || j == 50 || j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 37 && j < 43)||(j > 43 && j < 50))
+                    settype(i, j, 'h');
+                if (j > 60 && j < 76)
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j == 13 || j == 31)
+                    settype(i, j, 'c');
+                if (j == 43)
+                    settype(i, j, 'd');
+                if ((j > 0 && j < 13) || (j > 13 && j < 31) ||
+                    (j > 31 && j < 37) || (j > 50 && j < 60) ||
+                    j == 77)
+                    settype(i, j, 'b');
+            }
+            // the tenth row
+            if (i == 10)
+            {
+                if (j == 37 || j == 50 || j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 60 && j < 76) || (j > 37 && j < 50))
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j > 37 && j < 50)
+                    setroom(i, j, 3);
+                if (j == 13 || j == 31)
+                    settype(i, j, 'c');
+                if ((j > 0 && j < 13) || (j > 13 && j < 31) ||
+                    (j > 31 && j < 37) || (j > 50 && j < 60) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the eleventh row
+            if (i == 11)
+            {
+                if (j == 37 || j == 50 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 60 && j < 76) || (j > 37 && j < 50))
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j > 37 && j < 50)
+                    setroom(i, j, 3);
+                if ((j > 12 && j < 32) || (j > 52 && j < 60))
+                    settype(i, j, 'c');
+                if (j == 60)
+                    settype(i, j, 'd');
+                if ((j > 0 && j < 13) || (j > 31 && j < 37) ||
+                    (j > 50 && j < 53) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the twelvth row
+            if (i == 12)
+            {
+                if (j == 37 || j == 50 || j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 60 && j < 76) || (j > 37 && j < 50))
+                    settype(i, j, 'p');
+                if (j > 60 && j < 76)
+                    setroom(i, j, 2);
+                if (j > 37 && j < 50)
+                    setroom(i, j, 3);
+                if (j == 13 || j == 31 || j == 53)
+                    settype(i, j, 'c');
+                if ((j > 0 && j < 13) || (j > 13 && j < 31) ||
+                    (j > 31 && j < 37) || (j > 50 && j < 53) ||
+                    (j > 53 && j < 60) || j == 77)
+                    settype(i, j, 'b');
+            }
+            // the tirtheenth row
+            if (i == 13)
+            {
+                if (j == 37 || j == 50 || j == 60 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 37 && j < 43) || (j > 43 && j < 50) ||
+                    (j > 60 && j < 69) || (j > 69 && j < 76))
+                    settype(i, j, 'h');
+                if (j == 13 || j == 31 || j == 53)
+                    settype(i, j, 'c');
+                if (j == 43 || j == 69)
+                    settype(i, j, 'd');
+                if ((j > 0 && j < 13) || (j > 13 && j < 31) ||
+                    (j > 31 && j < 37) || (j > 50 && j < 53) ||
+                    (j > 53 && j < 60) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 14)
+            {
+                if (j == 3 || j == 25)
+                    settype(i, j, 'v');
+                if ((j > 3 && j < 13) || (j > 13 && j < 25))
+                    settype(i, j, 'h');
+                if (j == 31 || j == 43 || j == 53 || j == 69)
+                    settype(i, j, 'c');
+                if (j == 13)
+                    settype(i, j, 'd');
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||
+                    (j > 31 && j < 43) || (j > 43 && j < 53) ||
+                    (j > 53 && j < 69) || (j > 69 && j < 78))
+                    settype(i, j, 'b');
+            }
+            if (i == 15)
+            {
+                if (j == 3 || j == 25 || j == 64 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 64 && j < 69) || (j > 69 && j < 76))
+                    settype(i, j, 'h');
+                if (j == 31 || j == 43 || j == 53)
+                    settype(i, j, 'c');
+                if (j == 69)
+                    settype(i, j, 'd');
+                if (j > 3 && j < 25)
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||
+                    (j > 31 && j < 43) || (j > 43 && j < 53) || 
+                    (j > 53 && j < 64) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 16)
+            {
+                if (j == 3 || j == 25 || j == 64 || j == 76)
+                    settype(i, j, 'v');
+                if (j > 30 && j < 54)
+                    settype(i, j, 'c');
+                if ((j > 3 && j < 25) || (j > 64 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 64 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
+                    (j > 53 && j < 64) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 17)
+            {
+                if (j == 3 || j == 25 || j == 64 || j == 76)
+                    settype(i, j, 'v');
+                if (j == 31 || j == 43)
+                    settype(i, j, 'c');
+                if ((j > 3 && j < 25) || (j > 64 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 64 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
+                    (j > 31 && j < 43) || (j > 43 && j < 64) ||
+                    j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 18)
+            {
+                if (j == 3 || j == 25 || j == 36 || j == 64 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 36 && j < 43) || (j > 43 && j < 64))
+                    settype(i, j, 'h');
+                if (j == 31)
+                    settype(i, j, 'c');
+                if (j == 43)
+                    settype(i, j, 'd');
+                if ((j > 3 && j < 25) || (j > 64 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 64 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
+                    (j > 31 && j < 36) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 19)
+            {
+                if (j == 3 || j == 25 || j == 36 || j == 76)
+                    settype(i, j, 'v');
+                if (j == 31)
+                    settype(i, j, 'c');
+                if ((j > 3 && j < 25) || (j > 36 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 36 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || (j > 25 && j < 31) ||  
+                    (j > 31 && j < 36) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 20)
+            {
+                if (j == 3 || j == 76)
+                    settype(i, j, 'v');
+                if (j == 25 || j == 36)
+                    settype(i, j, 'd');
+                if (j > 25 && j < 36)
+                    settype(i, j, 'c');
+                if ((j > 3 && j < 25) || (j > 36 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 36 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 21)
+            {
+                if (j == 3 || j == 25 || j == 36 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 3 && j < 25) || (j > 36 && j < 76))
+                    settype(i, j, 'p');
+                if (j > 3 && j < 25)
+                    setroom(i, j, 4);
+                if (j > 36 && j < 76)
+                    setroom(i, j, 5);
+                if ((j > 0 && j < 3) || (j > 25 && j < 36) || 
+                    j == 77)
+                    settype(i, j, 'b');
+            }
+            if (i == 22)
+            {
+                if (j == 3 || j == 25 || j == 36 || j == 76)
+                    settype(i, j, 'v');
+                if ((j > 3 && j < 25) || (j > 36 && j < 76))
+                    settype(i, j, 'h');
+                if ((j > 0 && j < 3) || (j > 25 && j < 36) || 
+                    j == 77)
+                    settype(i, j, 'b');
+            }
+        }
+    }
+    maxnpc = 20;
+    maxpotion = 10;
+}
+
+void floor::setroom(int r, int c, int num){
+    theFloor[r][c].setroom(num);
+}
+
+void floor::settype(int r, int c, char type){
+    theFloor[r][c].settype(type);
 }
 
