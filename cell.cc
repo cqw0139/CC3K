@@ -9,7 +9,7 @@ char cell::gettype() const{
 	return type;
 }
 
-bool cell::isoccupied() const{
+int cell::isoccupied() const{
 	return occupied;
 }
 
@@ -17,11 +17,46 @@ char cell::getchartype() const{
 	return chartype;
 }
 
-void cell::setchartype(char c, npc* p){
-	occupied = 1;
-	curchar = p;
-	chartype = c;
+int cell::getroom() const{
+	return curroom;
 }
+
+info* cell::getinfo() const{
+	return curinfo;
+}
+
+bool cell::getmove() const{
+	return move;
+}
+
+void cell::setchartype(char c, info* newinfo, int type){
+	occupied = type;
+	chartype = c;
+	curinfo = newinfo;
+	//index = i;
+}
+
+void cell::setstair(){
+	occupied = 9;
+	chartype = '\\';
+}
+
 void cell::settype(char c){
 	type = c;
 }
+
+void cell::setroom(int n){
+	curroom = n;
+}
+
+void cell::movechar(){
+	curinfo = nullptr;
+	chartype = 0;
+	occupied = 0;
+	move = 0;
+}
+
+void cell::changemove(){
+	move = !move;
+}
+

@@ -14,12 +14,14 @@
 #include "info.h"
 
 
-class treasure:public info{
-private:
+class treasure: public info{
+private: 
     int goldvalue;
     std::string type;
 public:
     treasure(int g, std::string t);
+    std::string gettype() override;
+    int getvalue();
     ~treasure();
 };
 

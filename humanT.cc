@@ -7,9 +7,7 @@
 //
 
 #include "humanT.h"
-htreasure::htreasure():
-treasure(2,"G")
-{}
+htreasure::htreasure(): treasure(2,"G") {}
 
 htreasure::~htreasure(){
 }

@@ -7,9 +7,7 @@
 //
 
 #include "merchantT.h"
-mtreasure::mtreasure():
-treasure(4,"G")
-{}
+mtreasure::mtreasure(): treasure(4,"G") {}
 
 mtreasure::~mtreasure(){
 }

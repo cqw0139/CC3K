@@ -10,11 +10,16 @@
 #include <string>
 using namespace std;
 
-treasure::treasure(int g, std::string t):
-goldvalue(g),
-type(t)
-{}
+treasure::treasure(int g, std::string t): goldvalue(g), 
+type(t) {}
 
+string treasure::gettype(){
+    return type;
+}
+
+int treasure::getvalue(){
+    return goldvalue;
+}
 
 treasure::~treasure(){
 }

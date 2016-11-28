@@ -1,17 +1,21 @@
-//
-//  dragonT.cpp
-//  cc3k
-//
-//  Created by ChengQiwei on 2016-11-21.
-//  Copyright © 2016 ChengQiwei. All rights reserved.
-//
-
 #include "dragonT.h"
 
-dragontreasure::dragontreasure(): treasure(6,"G") {}
+dragontreasure::dragontreasure(): treasure(6,"T") {}
 
-dragon* dragontreasure::getprotector(){
+void dragontreasure::protectdead(){
+    wheprotect = 0;
+}
+
+int dragontreasure::check(){
+    return wheprotect;
+}
+
+npc* dragontreasure::getprotector(){
     return protector;
+}
+
+void dragontreasure::setprotector(npc* protectd){
+    protector = protectd;
 }
 
 dragontreasure::~dragontreasure(){

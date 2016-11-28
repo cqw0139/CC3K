@@ -1,11 +1,3 @@
-//
-//  npc.cpp
-//  cc3k
-//
-//  Created by ChengQiwei on 2016-11-19.
-//  Copyright © 2016 ChengQiwei. All rights reserved.
-//
-
 #include "npc.h"
 #include <string>
 using namespace std;
@@ -44,20 +36,24 @@ void npc::setgold(int g){
     gold = g;
 }
 
-int npc::gethostile(){
+int npc::gethostile() const{
     return hostile;
 }
 
-int npc::getgold(){
+int npc::getgold() const{
     return gold;
 }
 
-int npc::getrow(){
+int npc::getrow() const{
     return row;
 }
 
-int npc::getcol(){
+int npc::getcol() const{
     return col;
+}
+
+bool npc::isdead() const{
+    return gethp() > 0;
 }
 
 void npc::changehp(int damage){
@@ -81,15 +77,15 @@ void npc::changedef(int effect){
     }
 }
 
-int npc::gethp(){
+int npc::gethp() const{
     return hp;
 }
 
-int npc::getatk(){
+int npc::getatk() const{
     return atk;
 }
 
-int npc::getdef(){
+int npc::getdef() const{
     return def;
 }
 

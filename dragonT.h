@@ -1,24 +1,23 @@
-//
-//  dragonT.hpp
-//  cc3k
-//
-//  Created by ChengQiwei on 2016-11-21.
-//  Copyright © 2016 ChengQiwei. All rights reserved.
-//
-
 #ifndef __dragonT_h__
 #define __dragonT_h__
 
 #include <iostream>
 #include <string>
 #include "treasure.h"
-#include "dragon.h"
+//#include "dragon.h"
+#include "npc.h"
 
-class dragontreasure:public treasure{
+class dragon;
+
+class dragontreasure: public treasure{
 private:
-    dragon* protector;
+    npc* protector;
+    int wheprotect = 1;
 public:
-    dragon* getprotector();
+    int check();
+    void protectdead();
+    void setprotector(npc*);
+    npc* getprotector();
     dragontreasure();
     ~dragontreasure();
 };

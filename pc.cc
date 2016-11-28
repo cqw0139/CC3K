@@ -11,7 +11,16 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <sstream>
 using namespace std;
+
+
+string itos(int i)  // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
 
 pc::pc(int h, int a, int d, string t):
 hp(h),
@@ -29,29 +38,34 @@ void pc::setcol(int c){
     col = c;
 }
 
-int pc::getrow(){
+int pc::getrow() const{
     return row;
 }
 
-int pc::getcol(){
+int pc::getcol() const{
     return col;
 }
 
-int pc::gethp(){
+int pc::gethp() const{
     return hp;
 }
 
-int pc::getatk(){
+int pc::getatk() const{
     return atk;
 }
 
-int pc::getdef(){
+int pc::getdef() const{
     return def;
 }
 
-void pc::beattack(npc* enermy){
+void pc::beattack(npc* enermy, string& action){
+    int length = action.length();
+    string etyp = &action[length-1];
+    action.pop_back();
+    action += etyp;
     int eatk = enermy->getatk();
     string etype = enermy->gettype();
+    action = action + " deals ";
     float dmg = 0;
     dmg = eatk*100.0/(100.0 + def);
     if((etype == "orc")&&(type == "goblin")){
@@ -62,10 +76,18 @@ void pc::beattack(npc* enermy){
     if(miss == 0){
         dmg = 0;
     }
+    string d = itos(dmg);
+    action = action + d + " damage to pc.";
     if(etype == "elf"){
         if(type == "drow"){
         }
         else{
+            miss = rand() % 2;
+            if(miss == 0){
+                dmg = 0;
+            }
+            d = itos(dmg);
+            action = action + " " + etyp + " deals " + d + " damage to pc.";
             changehp(dmg);
         }
     }
@@ -104,10 +126,19 @@ void pc::changedef(int effect){
     }
 }
 
-void pc::attack(npc* enermy){
+int pc::getgold() const{
+    return gold;
+}
+
+void pc::changegold(int earn){
+    gold = gold + earn;
+}
+
+void pc::attack(npc* enermy, string& action){
     int edef = enermy->getdef();
     string etype = enermy->gettype();
     float dmg = 0;
+    string etyp = action;
     dmg = atk*100.0/(100.0 + edef);
     if(type == "vampire"){
         if(enermy->gettype() == "dwarf"){
@@ -117,6 +148,9 @@ void pc::attack(npc* enermy){
             changehp(-5);
         }
     }
+    if(type == "goblin"){
+        changegold(5);
+    }
     dmg = ceil(dmg);
     if(etype == "halfling"){
         int miss = rand() % 2;
@@ -124,7 +158,10 @@ void pc::attack(npc* enermy){
             dmg = 0;
         }
     }
+    string d = itos(dmg);
     enermy->changehp(dmg);
+    string h = itos(enermy->gethp());
+    action = "pc deals " + d + " damage to " + etyp + " (" + h + " HP).";
 }
 
 void pc::usepotion(potion* p){
@@ -154,6 +191,10 @@ void pc::usepotion(potion* p){
     else{
         cout << "impossible!!!" << endl;
     }
+}
+
+bool pc::isdead() const{
+    return gethp() > 0;
 }
 
 pc::~pc(){
