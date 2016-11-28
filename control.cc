@@ -136,7 +136,7 @@ void initpotion(floor& f){
 void initpc (floor& f){
 	srand (time(NULL));
 	int row, col;
-	pc* newpc = new shade();
+	pc* newpc = new vampire();
 	randominfo(row ,col, f);
 	f.initpc(row, col, newpc);
 }
@@ -532,4 +532,5 @@ void entercommand(floor &f){
 		cout << f;
 	}
 }
+
 

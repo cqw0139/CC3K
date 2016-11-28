@@ -10,4 +10,5 @@
 #include <string>
 using namespace std;
 
+
 BD::BD():potion(5,"BD"){}

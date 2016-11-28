@@ -10,5 +10,6 @@
 #include <string>
 using namespace std;
 
+
 RH::RH():potion(-10,"RH"){}
 

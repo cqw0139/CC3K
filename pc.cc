@@ -140,6 +140,7 @@ void pc::attack(npc* enermy, string& action){
     string etype = enermy->gettype();
     float dmg = 0;
     string etyp = action;
+    action.pop_back();
     dmg = atk*100.0/(100.0 + edef);
     if(type == "vampire"){
         if(enermy->gettype() == "dwarf"){

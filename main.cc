@@ -10,5 +10,5 @@ int main(int argc, char const *argv[])
     floor f;
     init(f);
     entercommand(f);
-    cout << "la ji shu le" << endl;
+    cout << "You are dead with score: " << getscore(f) << endl;
 }

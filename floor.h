@@ -114,5 +114,6 @@ public:
     
 
 	friend std::ostream &operator<<(std::ostream &out, floor &f);
+    
 };
 #endif

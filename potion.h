@@ -11,6 +11,12 @@ protected:
     int effect;
     int whetherbeused;
 public:
+    static int usedRH;
+    static int usedBA;
+    static int usedBD;
+    static int usedPH;
+    static int usedWA;
+    static int usedWD;
     potion(int eff, std::string typ);
     void beused();
     int checkused();

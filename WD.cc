@@ -10,4 +10,5 @@
 #include <string>
 using namespace std;
 
+
 WD::WD():potion(-5,"WD"){}

@@ -31,3 +31,5 @@ void move(std::string direction, floor& f);
 void movenpc(floor& f);
 
 void entercommand(floor& f);
+
+int getscore(floor& f);

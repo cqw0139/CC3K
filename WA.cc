@@ -11,4 +11,5 @@
 #include <string>
 using namespace std;
 
+
 WA::WA():potion(-5,"WA"){}

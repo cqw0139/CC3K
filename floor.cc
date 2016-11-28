@@ -712,39 +712,108 @@ void floor::movechar(int direction){
     }
     else
     {
+        string dir;
         theFloor[row][col].movechar();
         if (direction == 0){
             row--;
+            dir = "North";
         }
         else if (direction == 1){
             row++;
+            dir = "South";
         }
         else if (direction == 2){
             col--;
+            dir = "West";
         }
         else if (direction == 3){
             col++;
+            dir = "East";
         }
         else if (direction == 4){
             col--;
             row--;
+            dir = "Northwest";
         }
         else if (direction == 5){
             row++;
             col--;
+            dir = "Southwest";
         }
         else if (direction == 6){
             row--;
             col++;
+            dir = "Northeast";
         }
         else if (direction == 7){
             row++;
             col++;
+            dir = "Southeast";
         }
         theFloor[row][col].setchartype('p', person, 1);
         person->setrow(row);
         person->setcol(col);
-        action = " PC moves to a new cell.";
+        action = " PC moves " + dir;
+        int whepotion = 0;
+        for (int k = 0; k < 8; ++k){
+            checkneighbour(row, col, k, ch, occ);
+            if(occ == 4){
+                if(whepotion == 0){
+                    action += " and sees ";
+                }else{
+                    action += ", ";
+                }
+                whepotion++;
+                if (k == 0){
+                    row--;
+                }
+                else if (k == 1){
+                    row++;
+                }
+                else if (k == 2){
+                    col--;
+                }
+                else if (k == 3){
+                    col++;
+                }
+                else if (k == 4){
+                    col--;
+                    row--;
+                }
+                else if (k == 5){
+                    row++;
+                    col--;
+                }
+                else if (k == 6){
+                    row--;
+                    col++;
+                }
+                else if (k == 7){
+                    row++;
+                    col++;
+                }
+                info* in = getinfo(row, col);
+                potion* p = static_cast<potion*>(in);
+                string potion = p->gettype();
+                cout << 1 << endl;
+                if(potion == "RH"){
+                    action += "a " + potion;
+                }else if((potion == "BA")&&(p->usedBA == 1)){
+                    action += "a " + potion;
+                }else if((potion == "BD")&&(p->usedBD == 1)){
+                    action += "a " + potion;
+                }else if((potion == "PH")&&(p->usedPH == 1)){
+                    action += "a " + potion;
+                }else if((potion == "WA")&&(p->usedWA == 1)){
+                    action += "a " + potion;
+                }else if((potion == "WD")&&(p->usedWD == 1)){
+                    action += "a " + potion;
+                }else{
+                    action += "an unknown potion";
+                }
+            }
+        }
+        action += ".";
     }
 }
 
@@ -824,9 +893,11 @@ void floor::attacknpc(int r, int c){
             merchant* curm = static_cast<merchant*>(curnpc);
             curm->hostile = 1;
             MerchantStartAttack();
+            person->attack(curnpc, action);
+            action = action + " All merchants start to attack PC.";
+        }else{
+            person->attack(curnpc, action);
         }
-        person->attack(curnpc, action);
-        action = action + " All merchants start to attack PC.";
     }
 }
 
@@ -854,6 +925,20 @@ void floor::usepotion(int r, int c){
         action = " PC can only use a potion.";
     else
     {
+        string potion = curpotion->gettype();
+        if(potion == "RH"){
+            curpotion->usedRH = 1;
+        }else if(potion == "BA"){
+            curpotion->usedBA = 1;
+        }else if(potion == "BD"){
+            curpotion->usedBD = 1;
+        }else if(potion == "PH"){
+            curpotion->usedPH = 1;
+        }else if(potion == "WA"){
+            curpotion->usedWA = 1;
+        }else if(potion == "WD"){
+            curpotion->usedWD = 1;
+        }
         person->usepotion(curpotion, action);
         curpotion->beused();
     }
@@ -908,7 +993,7 @@ ostream &operator<<(ostream &out, floor &f){
 						break;
 					}
 					case 'd':{
-						out << "d";
+						out << "W";
 						break;
 					}
 					case 'H':{
@@ -995,3 +1080,4 @@ ostream &operator<<(ostream &out, floor &f){
 void floor::resetaction(){
     action = "";
 }
+

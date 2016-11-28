@@ -10,4 +10,5 @@
 #include <string>
 using namespace std;
 
+
 BA::BA():potion(5,"BA"){}
