@@ -62,6 +62,7 @@ void pc::beattack(npc* enermy, string& action){
     int length = action.length();
     string etyp = &action[length-1];
     action.pop_back();
+    action += " ";
     action += etyp;
     int eatk = enermy->getatk();
     string etype = enermy->gettype();
@@ -77,7 +78,7 @@ void pc::beattack(npc* enermy, string& action){
         dmg = 0;
     }
     string d = itos(dmg);
-    action = action + d + " damage to pc.";
+    action = action + d + " damage to PC.";
     if(etype == "elf"){
         if(type == "drow"){
         }
@@ -145,11 +146,13 @@ void pc::attack(npc* enermy, string& action){
             changehp(5);
         }
         else{
+            action = action + " PC gain 5 HP by vampire's skill.";
             changehp(-5);
         }
     }
     if(type == "goblin"){
         changegold(5);
+        action = action + " PC steals 5 gold by goblin's skill.";
     }
     dmg = ceil(dmg);
     if(etype == "halfling"){
@@ -161,12 +164,13 @@ void pc::attack(npc* enermy, string& action){
     string d = itos(dmg);
     enermy->changehp(dmg);
     string h = itos(enermy->gethp());
-    action = "pc deals " + d + " damage to " + etyp + " (" + h + " HP).";
+    action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
 }
 
-void pc::usepotion(potion* p){
+void pc::usepotion(potion* p, string &action){
     string typ = p->gettype();
     int effect = p->geteffect();
+    action = " PC uses " + typ + ".";
     if(type == "drow"){
         effect = effect * 1.5;
     }
@@ -189,7 +193,7 @@ void pc::usepotion(potion* p){
         changedef(effect);
     }
     else{
-        cout << "impossible!!!" << endl;
+        action += "there is a bug.";
     }
 }
 

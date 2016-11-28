@@ -37,7 +37,7 @@ protected:
     int col;
     std::string type;
 public:
-    void usepotion(potion*);
+    void usepotion(potion*, std::string &action);
     void setrow(int r);
     void setcol(int c);
     int getrow() const;

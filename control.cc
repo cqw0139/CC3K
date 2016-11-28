@@ -36,7 +36,7 @@ void inittreasure(floor& f){
         treasuretype = rand() % 8 + 1;
         randominfo(row, col, f);
         if(treasuretype == 1){
-            cout << "there is dragon" << endl;
+            cout << "There is dragon." << endl;
             dragontreasure* dt = new dragontreasure;
             char typ;
             int occ;
@@ -364,6 +364,7 @@ void movenpc(floor& f){
                         info* in = f.getinfo(j,i);
                         dragontreasure* t = static_cast<dragontreasure*>(in);
                         npc* protector = t->getprotector();
+                        f.action += "D";
                         p->beattack(protector, f.action);
                     }
                 }

@@ -3,7 +3,16 @@
 #include <string>
 #include <vector>
 #include "floor.h"
+#include <sstream>
 using namespace std;
+
+
+string inttos(int i)  // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
 
 int floor::curFloor = 1;
 
@@ -143,7 +152,9 @@ void floor::initpc(int r, int c, pc* p){
 	p->setrow(r);
 	p->setcol(c);
 	theFloor[r][c].setchartype('p', p, 1);
-    action += "Player character has spawned.";
+    if(curFloor == 1){
+        action += " Player character has spawned.";
+    }
 }
 
 void floor::init(){
@@ -583,7 +594,7 @@ void floor::movechar(int direction){
     checkneighbour(row, col, direction, ch, occ);
     if (ch == 'v' || ch == 'h' || ch == 'b')
     {
-        cout << "zhuang le" << endl;
+        action = " PC cannot move to that place.";
     }
     else if (occ == 5) {
         theFloor[row][col].movechar();
@@ -652,7 +663,7 @@ void floor::movechar(int direction){
         dragontreasure* dt = static_cast<dragontreasure*>(curinfo);
         int check = dt->check();
         if(check == 1){
-            cout << "da long qu" << endl;
+            action = " This is a dragon hoard, and its protector is still alive.";
         }else{
             theFloor[row][col].movechar();
             if (direction == 0){
@@ -691,10 +702,13 @@ void floor::movechar(int direction){
         }
     }
     else if (occ == 9) {
+        action = " PC moves to the next floor.";
 			throw (occ);
     }
     else if (occ == 2 || occ == 3){
-        cout << "da a" << endl;
+        action = " There is a npc on the cell, PC needs to defeat it before PC moves to that cell.";
+    }else if (occ == 4){
+        action = " There is a potion. PC can use u command to pick it.";
     }
     else
     {
@@ -730,6 +744,7 @@ void floor::movechar(int direction){
         theFloor[row][col].setchartype('p', person, 1);
         person->setrow(row);
         person->setcol(col);
+        action = " PC moves to a new cell.";
     }
 }
 
@@ -803,7 +818,7 @@ void floor::attacknpc(int r, int c){
     char etyp = getchartype(r,c);
     action = etyp;
     if((p != 2)&&(p != 3))
-        action = "You need to attack a valid obeject.";
+        action = " PC can only attack a non-player character.";
     else{
         if((etyp == 'm')&&(merchanthostile == 0)){
             merchant* curm = static_cast<merchant*>(curnpc);
@@ -811,7 +826,7 @@ void floor::attacknpc(int r, int c){
             MerchantStartAttack();
         }
         person->attack(curnpc, action);
-        action += " ";
+        action = action + " All merchants start to attack PC.";
     }
 }
 
@@ -827,7 +842,6 @@ void floor::npcattack(int r, int c){
     {
         action = action + etyp;
         person->beattack(curnpc, action);
-        action += " ";
         changemove(r, c);
     }
 }
@@ -837,10 +851,10 @@ void floor::usepotion(int r, int c){
     info* curinfo = theFloor[r][c].getinfo();
     potion* curpotion = static_cast<potion*>(curinfo);
     if(p != 4)
-        cout << "nimabi" << endl;
+        action = " PC can only use a potion.";
     else
     {
-        person->usepotion(curpotion);
+        person->usepotion(curpotion, action);
         curpotion->beused();
     }
 }
@@ -850,9 +864,10 @@ void floor::pickgold(int r, int c){
     info* curinfo = theFloor[r][c].getinfo();
     treasure* curT = static_cast<treasure*>(curinfo);
     if(p != 5 && p != 6){
-        cout << "ni bu yao gao shi qing a" << endl;
+        action = " BUG!";
     }else{
         int g = curT->getvalue();
+        action = " PC picks " + inttos(g) + " golds.";
         person->changegold(g);
     }
 }
@@ -972,7 +987,7 @@ ostream &operator<<(ostream &out, floor &f){
 	out << "HP: " << f.person->gethp() << endl;
 	out << "Atk: " << f.person->getatk() << endl;
 	out << "Def: " << f.person->getdef() << endl;
-    out << "Action: " << f.action << endl;
+    out << "Action:" << f.action << endl;
     f.resetaction();
 	return out;
 }
