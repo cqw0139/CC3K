@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <fstream>
 #include <time.h>
 using namespace std;
 
@@ -136,68 +137,33 @@ void initpotion(floor& f){
 void initpc (floor& f){
 	srand (time(NULL));
 	int row, col;
-	pc* newpc = new vampire();
+    string pctype;
+    pc* newpc;
+    cout << "please enter the race you want to play" << endl;
+    while(cin >> pctype){
+        if(pctype == "s"){
+            newpc = new shade;
+            break;
+        }else if(pctype == "d"){
+            newpc = new drow;
+            break;
+        }else if(pctype == "v"){
+            newpc = new vampire;
+            break;
+        }else if(pctype == "g"){
+            newpc = new goblin;
+            break;
+        }else if(pctype == "t"){
+            newpc = new troll;
+            break;
+        }else{
+            cout << "Please enter one of a, d, v, g, t to choose a race." << endl;
+            continue;
+        }
+    }
 	randominfo(row ,col, f);
 	f.initpc(row, col, newpc);
 }
-
-/*void initdragon(floor& f){
-	int row, col;
-	int room;
-	int state;
-	char type;
-	dragontreasure* newndragontreasure;
-	while (1) {
-		randompc(row, col);
-		room = f.getroom(row, col);
-		state = f.isoccupied(row, col);
-		if (room && (state == 0)){
-			newndragontreasure = new dragontreasure();
-			f.addinfo(row, col, newndragontreasure);
-			break;
-		}
-	}
-	dragon* newdragon = new dragon();
-	while (1){
-		int direction = rand() % 4;
-		if (direction == 0){
-			int newrow = row - 1;
-			type = f.gettype(newrow, col);
-			state = f.isoccupied(newrow, col);
-			if (type == 'p'&& (state == 0)){
-				f.addinfo(newrow, col, newdragon);
-				break;
-			}
-		}
-		else if (direction == 1){
-			int newcol = col + 1;
-			type = f.gettype(row, newcol);
-			state = f.isoccupied(row, newcol);
-			if (type == 'p'&& (state == 0)){
-				f.addinfo(row, newcol, newdragon);
-				break;
-			}
-		}
-		else if (direction == 2){
-			int newrow = row + 1;
-			type = f.gettype(newrow, col);
-			state = f.isoccupied(newrow, col);
-			if (type == 'p'&& (state == 0)){
-				f.addinfo(newrow, col, newdragon);
-				break;
-			}
-		}
-		else {
-			int newcol = col - 1;
-			type = f.gettype(row, newcol);
-			state = f.isoccupied(row, newcol);
-			if (type == 'p'&& (state == 0)){
-				f.addinfo(row, newcol, newdragon);
-				break;
-			}
-		}
-	}
-}*/
 
 void initnpc(floor& f){
 	srand (time(NULL));
@@ -226,9 +192,55 @@ void initnpc(floor& f){
 
 void initstair(floor& f){
 	srand (time(NULL));
-	int row, col;
-	randominfo(row, col, f);
-	f.initstair(row, col);
+    int row, col;
+    randominfo(row, col, f);
+    boss* newboss = new boss;
+    newboss->alive = 1;
+//    cout << newboss->gethp() << endl;
+    f.setboss(newboss);
+    npc* newnpc = newboss;
+    f.addinfo(row, col, newnpc);
+/*    int r = 0;
+    int c = 0;
+    f.initstair(row, col);
+    char ch;
+    int occ;
+    for(int i = 0; i < 8; i++){
+        f.checkneighbour(row,col,i, ch, occ);
+        if((occ == 0)&&(ch == 'p')){
+            if(i == 0) {
+                r = row - 1;
+                c = col;
+            }else if(i == 1){
+                r = row + 1;
+                c = col;
+            }else if(i == 2){
+                r = row;
+                c = col - 1;
+            }else if(i == 3){
+                r = row;
+                c = col + 1;
+            }else if(i == 4){
+                r = row - 1;
+                c = col - 1;
+            }else if(i == 5){
+                r = row + 1;
+                c = col - 1;
+            }else if(i == 6){
+                r = row - 1;
+                c = col + 1;
+            }else if(i == 7){
+                r = row + 1;
+                c = col + 1;
+            }
+            boss* newboss = new boss;
+            newboss->alive = 1;
+            f.setboss(newboss);
+            npc* newnpc = newboss;
+            f.addinfo(r, c, newnpc);
+            break;
+        }
+    }*/
 }
 
 void init(floor& f){
@@ -240,7 +252,7 @@ void init(floor& f){
     initnpc(f);
     initstair(f);
     inittreasure(f);
-    cout << f;
+    output(f);
 }
 
 void upstair(floor& f){
@@ -249,10 +261,10 @@ void upstair(floor& f){
 	int row, col;
 	randominfo(row, col ,f);
 	f.initpc(row, col, curpc);
+    initstair(f);
 	initpotion(f);
 	//initdragon(f);
 	initnpc(f);
-	initstair(f);
 	inittreasure(f);
 }
 
@@ -284,6 +296,7 @@ void move(string direction, floor& f){
 }
 
 void movedead(floor& f){
+    pc* p = f.getpc();
 	for (int i = 1; i < 78; ++i)
 	{
 		for (int  j= 1; j < 24; ++j)
@@ -296,9 +309,9 @@ void movedead(floor& f){
 				bool state = curnpc->isdead();
 				if(!state){
                     int g = curnpc->getgold();
-                    pc* p = f.getpc();
                     p->changegold(g);
 					f.removeinfo(j, i);
+                    p->addexp(12);
 				}
             }else if(occupied == 3){
                 info* curinfo = f.getinfo(j, i);
@@ -309,6 +322,22 @@ void movedead(floor& f){
                     dragon* d = static_cast<dragon*>(curinfo);
                     d->biebiemybaby();
                     f.removeinfo(j, i);
+                    p->addexp(18);
+                }
+            }else if(occupied == 7){
+                info* curinfo = f.getinfo(j, i);
+                npc* curnpc = static_cast<npc*>(curinfo);
+                bool state = curnpc->isdead();
+                if(!state){
+                    int g = curnpc->getgold();
+                    info* curinfo = f.getinfo(j,i);
+                    boss* b = static_cast<boss*>(curinfo);
+                    b->alive = 0;
+                    p->changegold(g);
+                    f.removeinfo(j, i);
+                    p->addexp(36 * f.curFloor);
+                    f.initstair(j, i);
+                    f.action += " The floor boss is killed, and the floor stair appears.";
                 }
             }
 		}
@@ -369,13 +398,22 @@ void movenpc(floor& f){
                         p->beattack(protector, f.action);
                     }
                 }
+            }else if(occupied == 7){
+                for (int k = 0; k < 8; ++k)
+                {
+                    f.checkneighbour(j, i, k, ch, occ);
+                    if (occ == 1)
+                    {
+                        f.npcattack(j, i);
+                    }
+                }
             }
         }
     }
     for (int i = 1; i < 78; ++i)
     {
         for (int j = 1; j < 24; ++j)
-            f.changemove(j, i);
+            f.resetmove(j, i);
     }
 }
 
@@ -530,8 +568,141 @@ void entercommand(floor &f){
         if(p->gettype() == "troll"){
             p->changehp(-5);
         }
-		cout << f;
+        p->levelup(f.action);
+		output(f);
 	}
 }
 
+void setGivenMap(ifstream& map, floor& f){
+	f.init();
+	string line;
+	for (int i = 0; i < 25; ++i)
+	{
+		getline(map, line);
+		//cout << line << endl;
+		for (int j = 0; j < 79; ++j)
+		{
+			if (line[j] == '|')
+				f.settype(i, j, 'v');
+			else if (line[j] == '-')
+				f.settype(i, j, 'h');
+			else if (line[j] == ' ') 
+				f.settype(i, j, 'b');
+			else if (line[j] == '#') 
+				f.settype(i, j, 'c');
+			else if (line[j] == '+')
+				f.settype(i, j, 'd');
+			else if (line[j] == '@'){
+				f.settype(i, j, 'p');
+				pc* curpc = new pc();
+				f.initpc(i, j, curpc);
+			}
+			else if (line[j] == 'E'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new elf();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'H'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new human();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'W'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new dwarf();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'O'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new orc();
+				f.addinfo(i, j, curnpc);
+			}	
+			else if (line[j] == 'M'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new merchant();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'D'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new dragon();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'L'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new halfling();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == 'L'){
+				f.settype(i, j, 'p');
+				npc* curnpc = new halfling();
+				f.addinfo(i, j, curnpc);
+			}
+			else if (line[j] == '0'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new RH();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '1'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new BA();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '2'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new BD();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '3'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new PH();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '4'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new WA();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '5'){
+				f.settype(i, j, 'p');
+				potion* curpotion = new WD();
+				f.addinfo(i, j, curpotion);
+			}
+			else if (line[j] == '6'){
+				f.settype(i, j, 'p');
+				treasure* curtreasure = new htreasure();
+				f.addinfo(i, j, curtreasure);
+			}
+			else if (line[j] == '7'){
+				f.settype(i, j, 'p');
+				treasure* curtreasure = new streasure();
+				f.addinfo(i, j, curtreasure);
+			}
+			else if (line[j] == '8'){
+				f.settype(i, j, 'p');
+				treasure* curtreasure = new mtreasure();
+				f.addinfo(i, j, curtreasure);
+			}
+			else if (line[j] == '9'){
+				f.settype(i, j, 'p');
+				treasure* curtreasure = new dragontreasure();
+				f.addinfo(i, j, curtreasure);
+			}
+			else
+				f.settype(i, j, 'p');
+		}
+	}
+}
+
+void output(floor& f){
+	pc *curpc= f.getpc();
+	cout << f;
+	cout << "Race: " << curpc->gettype() << " " << "Gold: " << curpc->getgold();
+	cout << " Level: " << curpc->getlevel() << "    floor: " << f.curFloor << endl;
+    cout << "HP: " << curpc->gethp() <<"   MP: " << curpc->getmp();
+    cout << "   Exp: " << curpc->getexp() << "/100" << endl;
+	cout << "Atk: " << curpc->getatk() << endl;
+	cout << "Def: " << curpc->getdef() << endl;
+    cout << "Action:" << f.action << endl;
+    f.resetaction();
+}
 

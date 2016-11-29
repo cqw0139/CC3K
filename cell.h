@@ -62,6 +62,7 @@ public:
 	void movechar();
 	// change the move state of the cell
 	void changemove();
-	// set the index for the cell
+	// reset the cur move
+	void resetmove();
 };
 #endif

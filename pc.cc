@@ -22,20 +22,34 @@ string itos(int i)  // convert int to string
     return s.str();
 }
 
-pc::pc(int h, int a, int d, string t):
-hp(h),
-atk(a),
-def(d),
-type(t),
-maxhp(h),
-gold(0)
-{}
+pc::pc(){}
+
+pc::pc(int h, int a, int d, string t, int m):level(1), mp(m), exp(0), hp(h), atk(a), def(d), type(t), maxhp(h), gold(0) {}
 
 void pc::setrow(int r){
     row = r;
 }
 void pc::setcol(int c){
     col = c;
+}
+
+void pc::addexp(int e){
+    exp += e;
+}
+void pc::changelevel(int l){
+    level += l;
+}
+void pc::changemp(int m){
+    mp += m;
+}
+int pc::getmp(){
+    return mp;
+}
+int pc::getexp(){
+    return exp;
+}
+int pc::getlevel(){
+    return level;
 }
 
 int pc::getrow() const{
@@ -56,6 +70,18 @@ int pc::getatk() const{
 
 int pc::getdef() const{
     return def;
+}
+
+void pc::levelup(string& action){
+    while(exp >= 100){
+        exp -= 100;
+        level++;
+        action += " Congratulation! PC LEVEL UP!!!";
+        maxhp = maxhp * 1.2;
+        atk = atk*1.2;
+        def = def*1.2;
+        changehp(-maxhp);
+    }
 }
 
 void pc::beattack(npc* enermy, string& action){
@@ -90,9 +116,11 @@ void pc::beattack(npc* enermy, string& action){
             d = itos(dmg);
             action = action + " " + etyp + " deals " + d + " damage to pc.";
             changehp(dmg);
+            addexp(3);
         }
     }
     changehp(dmg);
+    addexp(3);
 }
 
 void pc::changehp(int damage){
@@ -153,7 +181,7 @@ void pc::attack(npc* enermy, string& action){
     }
     if(type == "goblin"){
         changegold(5);
-        action = action + " PC steals 5 gold by goblin's skill.";
+        action = action + " PC steals 5 golds by goblin's skill.";
     }
     dmg = ceil(dmg);
     if(etype == "halfling"){
@@ -164,6 +192,7 @@ void pc::attack(npc* enermy, string& action){
     }
     string d = itos(dmg);
     enermy->changehp(dmg);
+    addexp(5);
     string h = itos(enermy->gethp());
     action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
 }

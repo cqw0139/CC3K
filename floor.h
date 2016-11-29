@@ -7,6 +7,7 @@ class floor
 {
 	std::vector<std::vector<cell>> theFloor;
 	pc* person = nullptr;
+    boss* bos = nullptr;
 	int maxnpc = 0;
 	int numnpc = 0;
 	int maxpotion = 0;
@@ -15,6 +16,8 @@ class floor
 	int numtreasure = 0;
 	int merchanthostile = 0;
 public:
+//   boss* bos = nullptr;
+    
     std::string action;
 	// destructor for the class
 	~floor();
@@ -80,6 +83,8 @@ public:
 	void initstair(int r, int c);
 
 	void changemhost();
+
+	void resetmove(int r, int c);
     
     void MerchantStartAttack();
 
@@ -117,6 +122,8 @@ public:
     void setroom(int r, int c, int num);
     
     void initBasicMap();
+    
+    void setboss(boss* b);
 
 	friend std::ostream &operator<<(std::ostream &out, floor &f);
     

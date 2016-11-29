@@ -20,6 +20,7 @@ floor::~floor(){
 }
 
 void floor::clearFloor() {
+    bos->level++;
 	numnpc = 0;
 	numpotion = 0;
 	numtreasure = 0;
@@ -217,6 +218,9 @@ void floor::addinfo(int r, int c, info* newinfo){
     if (type == "G"){
         theFloor[r][c].setchartype('G', newinfo, 5);
     }
+    if (type == "boss"){
+        theFloor[r][c].setchartype('B', newinfo, 7);
+    }
 }
 
 
@@ -338,6 +342,8 @@ void floor::movechar(int direction){
             person->setrow(row);
             person->setcol(col);
         }
+    }else if (occ == 7){
+        action = " There is a floor boss on the cell, PC needs to defeat it before PC moves to that cell.";
     }
     else if (occ == 9) {
         action = " PC moves to the next floor.";
@@ -518,13 +524,17 @@ void floor::changemove(int r, int c){
 	theFloor[r][c].changemove();
 }
 
+void floor::resetmove(int r, int c){
+	theFloor[r][c].resetmove();
+}
+
 void floor::attacknpc(int r, int c){
     int p = theFloor[r][c].isoccupied();
     info* curinfo = theFloor[r][c].getinfo();
     npc* curnpc = static_cast<npc*>(curinfo);
     char etyp = getchartype(r,c);
     action = etyp;
-    if((p != 2)&&(p != 3))
+    if((p != 2)&&(p != 3)&&(p!=7))
         action = " PC can only attack a non-player character.";
     else{
         if((etyp == 'm')&&(merchanthostile == 0)){
@@ -544,9 +554,8 @@ void floor::npcattack(int r, int c){
     info* curinfo = theFloor[r][c].getinfo();
     npc* curnpc = static_cast<npc*>(curinfo);
     char etyp = getchartype(r,c);
-    if((p != 2))
+    if((p != 2)&&(p != 7))
         cout << "??????" << endl;
-
     else if (curnpc->gethostile())
     {
         action = action + etyp;
@@ -592,6 +601,7 @@ void floor::pickgold(int r, int c){
         int g = curT->getvalue();
         action = " PC picks " + inttos(g) + " golds.";
         person->changegold(g);
+        person->addexp(g);
     }
 }
 
@@ -670,7 +680,10 @@ ostream &operator<<(ostream &out, floor &f){
                         out << "G";
                         break;
                     }
-
+                    case 'B':{
+                        out << "B";
+                        break;
+                    }
 				}
 			}
 			else{
@@ -705,13 +718,6 @@ ostream &operator<<(ostream &out, floor &f){
 		}
 		out << endl;
 	}
-	out << "Race: " << f.person->gettype() << " " << "Gold: " << f.person->getgold();
-	out << "                " << "floor: " << f.curFloor << endl;
-	out << "HP: " << f.person->gethp() << endl;
-	out << "Atk: " << f.person->getatk() << endl;
-	out << "Def: " << f.person->getdef() << endl;
-    out << "Action:" << f.action << endl;
-    f.resetaction();
 	return out;
 }
 
@@ -1101,3 +1107,6 @@ void floor::settype(int r, int c, char type){
     theFloor[r][c].settype(type);
 }
 
+void floor::setboss(boss* b){
+    bos = b;
+}

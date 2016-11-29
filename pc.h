@@ -19,6 +19,7 @@
 #include "merchant.h"
 #include "dragon.h"
 #include "halfling.h"
+#include "boss.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
@@ -28,6 +29,9 @@
 
 class pc: public info{
 protected:
+    int mp;
+    int exp;
+    int level;
     int hp;
     int atk;
     int def;
@@ -40,6 +44,13 @@ public:
     void usepotion(potion*, std::string &action);
     void setrow(int r);
     void setcol(int c);
+    void addexp(int e);
+    void changelevel(int l);
+    void changemp(int m);
+    void levelup(std::string& action);
+    int getmp();
+    int getexp();
+    int getlevel();
     int getrow() const;
     int getcol() const;
     int gethp() const;
@@ -54,7 +65,8 @@ public:
     void changehp(int demage);
     void attack(npc*, std::string& action);
     void changegold(int earn);
-    pc(int h, int a, int d, std::string t);
+    pc();
+    pc(int h, int a, int d, std::string t, int m);
     ~pc();
 };
 

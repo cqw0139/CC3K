@@ -60,3 +60,6 @@ void cell::changemove(){
 	move = !move;
 }
 
+void cell::resetmove(){
+	move = 0;
+}

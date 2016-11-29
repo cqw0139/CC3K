@@ -7,4 +7,4 @@
 //
 
 #include "drow.h"
-drow::drow(): pc(150,25,15,"drow") {}
+drow::drow(): pc(150,25,15,"drow", 200) {}

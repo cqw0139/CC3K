@@ -7,6 +7,6 @@
 //
 
 #include "shade.h"
-shade::shade(): pc(125,25,25,"shade") {}
+shade::shade(): pc(125,25,25,"shade", 80) {}
 
 
