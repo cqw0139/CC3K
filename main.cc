@@ -11,7 +11,6 @@ int main(int argc, char const *argv[])
     floor f;
     init(f);
     entercommand(f);
-    cout << "You are dead with score: " << getscore(f) << endl;
     /*floor f;
     ifstream filein;
     filein.open("samplemap.txt");

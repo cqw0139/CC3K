@@ -156,8 +156,14 @@ void initpc (floor& f){
         }else if(pctype == "t"){
             newpc = new troll;
             break;
+        }else if(pctype == "r"){
+            newpc = new dragonknight;
+            break;
+        }else if(pctype == "e"){
+            newpc = new deathknight;
+            break;
         }else{
-            cout << "Please enter one of a, d, v, g, t to choose a race." << endl;
+            cout << "Please enter one of a, d, v, g, t, r or e to choose a race." << endl;
             continue;
         }
     }
@@ -312,7 +318,56 @@ void movedead(floor& f){
                     p->changegold(g);
 					f.removeinfo(j, i);
                     p->addexp(12);
-				}
+                    string etyp = curnpc->gettype();
+                    if(etyp == "merchant"){
+                        treasure* newt = new mtreasure;
+                        f.addinfo(j,i,newt);
+                    }else if(etyp == "human"){
+                        treasure* newt1 = new htreasure;
+                        f.addinfo(j,i,newt1);
+                        treasure* newt2 = new htreasure;
+                        char ch;
+                        int occ;
+                        int k;
+                        int check;
+                        while(check <= 50){
+                            check++;
+                            k = rand() % 4;
+                            f.checkneighbour(j, i, k, ch, occ);
+                            if((ch == 'p')&&(occ == 0)){
+                                int r = 0;
+                                int c = 0;
+                                if(k == 0) {
+                                    r = j - 1;
+                                    c = i;
+                                }else if(k == 1){
+                                    r = j + 1;
+                                    c = i;
+                                }else if(k == 2){
+                                    r = j;
+                                    c = i - 1;
+                                }else if(k == 3){
+                                    r = j;
+                                    c = i + 1;
+                                }else if(k == 4){
+                                    r = j - 1;
+                                    c = i - 1;
+                                }else if(k == 5){
+                                    r = j + 1;
+                                    c = i - 1;
+                                }else if(k == 6){
+                                    r = j - 1;
+                                    c = i + 1;
+                                }else if(k == 7){
+                                    r = j + 1;
+                                    c = i + 1;
+                                }
+                                f.addinfo(r,c,newt2);
+                                break;
+                            }
+                        }
+                    }
+                }
             }else if(occupied == 3){
                 info* curinfo = f.getinfo(j, i);
                 npc* curnpc = static_cast<npc*>(curinfo);
@@ -390,12 +445,15 @@ void movenpc(floor& f){
                     f.checkneighbour(j, i, k, ch, occ);
                     if (occ == 1)
                     {
-                        pc* p = f.getpc();
                         info* in = f.getinfo(j,i);
                         dragontreasure* t = static_cast<dragontreasure*>(in);
-                        npc* protector = t->getprotector();
-                        f.action += "D";
-                        p->beattack(protector, f.action);
+                        int check = t->check();
+                        if(check == 1){
+                            pc* p = f.getpc();
+                            npc* protector = t->getprotector();
+                            f.action += "D";
+                            p->beattack(protector, f.action);
+                        }
                     }
                 }
             }else if(occupied == 7){
@@ -537,13 +595,16 @@ bool pcdead(floor& f){
 
 void entercommand(floor &f){
 	string command;
+    int npcmove = 1;
 	while(cin >> command){
 		if(command == "m"){
 			string mv;
 			cin >> mv;
 			try {
 				move (mv, f);
-				movenpc(f);
+                if(npcmove == 1){
+                    movenpc(f);
+                }
 			} catch ( int a ) {
 				f.clearFloor();
 				upstair(f);
@@ -553,23 +614,43 @@ void entercommand(floor &f){
 			string dir;
 			cin >> dir;
 			attack (dir, f);
-			movenpc(f);
+            if(npcmove == 1){
+                movenpc(f);
+            }
 		}
 		else if(command == "u"){
             string dir;
             cin >> dir;
             usepotion(dir, f);
             moveusedpotion(f);
-            movenpc(f);
+            if(npcmove == 1){
+                movenpc(f);
+            }
+        }else if(command == "f"){
+            if(npcmove == 0){
+                npcmove = 1;
+            }else if(npcmove == 1){
+                npcmove = 0;
+            }
+        }else if(command == "r"){
+            floor f;
+            init(f);
+            entercommand(f);
+            break;
+        }else if(command == "q"){
+            break;
         }
-        bool state = pcdead(f);
-        if (!state) break;
         pc* p = f.getpc();
         if(p->gettype() == "troll"){
             p->changehp(-5);
         }
         p->levelup(f.action);
-		output(f);
+        output(f);
+        bool state = pcdead(f);
+        if (!state){
+            cout << "You are dead with score: " << getscore(f) << endl;
+            break;
+        }
 	}
 }
 

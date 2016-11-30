@@ -103,6 +103,7 @@ void pc::beattack(npc* enermy, string& action){
     if(miss == 0){
         dmg = 0;
     }
+    changehp(dmg);
     string d = itos(dmg);
     action = action + d + " damage to PC.";
     if(etype == "elf"){
@@ -119,7 +120,6 @@ void pc::beattack(npc* enermy, string& action){
             addexp(3);
         }
     }
-    changehp(dmg);
     addexp(3);
 }
 

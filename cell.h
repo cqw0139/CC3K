@@ -7,6 +7,8 @@
 #include "drow.h"
 #include "troll.h"
 #include "vampire.h"
+#include "dragonknight.h"
+#include "deathknight.h"
 #include "RH.h"
 #include "BA.h"
 #include "BD.h"
