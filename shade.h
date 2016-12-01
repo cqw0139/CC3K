@@ -13,7 +13,6 @@
 #include "pc.h"
 
 class shade: public pc{
-
 public:
     shade();
     ~shade();

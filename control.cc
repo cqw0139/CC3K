@@ -579,7 +579,7 @@ void attack (string direction, floor& f){
 int getscore(floor& f){
     pc* p = f.getpc();
     int score;
-    if(p->gettype() == "shade"){
+    if(p->check("shadenative") == 1){
         score = p->getgold();
         score = score * 1.5;
     }else{

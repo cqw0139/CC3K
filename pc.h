@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "info.h"
 #include "human.h"
 #include "dwarf.h"
@@ -20,6 +21,7 @@
 #include "dragon.h"
 #include "halfling.h"
 #include "boss.h"
+#include "shadenative.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
@@ -40,6 +42,7 @@ protected:
     int row;
     int col;
     std::string type;
+    std::vector<skill*> skilllist;
 public:
     void usepotion(potion*, std::string &action);
     void setrow(int r);
@@ -59,6 +62,7 @@ public:
     int getgold() const;
     bool isdead() const;
     std::string gettype() override;
+    int check(std::string s);
     void changeatk(int effect);
     void changedef(int effect);
     void beattack(npc*, std::string& action);

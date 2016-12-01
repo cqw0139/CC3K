@@ -104,6 +104,9 @@ void pc::beattack(npc* enermy, string& action){
         dmg = 0;
     }
     changehp(dmg);
+    if(dmg > 0){
+        addexp(3);
+    }
     string d = itos(dmg);
     action = action + d + " damage to PC.";
     if(etype == "elf"){
@@ -117,10 +120,11 @@ void pc::beattack(npc* enermy, string& action){
             d = itos(dmg);
             action = action + " " + etyp + " deals " + d + " damage to pc.";
             changehp(dmg);
-            addexp(3);
+            if(dmg > 0){
+                addexp(3);
+            }
         }
     }
-    addexp(3);
 }
 
 void pc::changehp(int damage){
@@ -170,7 +174,7 @@ void pc::attack(npc* enermy, string& action){
     string etyp = action;
     action.pop_back();
     dmg = atk*100.0/(100.0 + edef);
-    if(type == "vampire"){
+    if(check("vampirenative") == 1){
         if(enermy->gettype() == "dwarf"){
             changehp(5);
         }
@@ -225,6 +229,16 @@ void pc::usepotion(potion* p, string &action){
     else{
         action += "there is a bug.";
     }
+}
+
+int pc::check(string s){
+    int length = skilllist.size();
+    for(int i = 0; i < length; i++){
+        if(skilllist[i]->getname() == s){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 bool pc::isdead() const{

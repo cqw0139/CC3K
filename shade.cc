@@ -7,6 +7,9 @@
 //
 
 #include "shade.h"
-shade::shade(): pc(125,25,25,"shade", 80) {}
+shade::shade(): pc(125,25,25,"shade", 80) {
+    skill* news = new shadenative;
+    skilllist.push_back(news);
+}
 
 

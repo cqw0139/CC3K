@@ -17,4 +17,5 @@ int main(int argc, char const *argv[])
     setGivenMap(filein, f);
     cout << f;
     filein.close();*/
+    skill* s = new shadenative;
 }
