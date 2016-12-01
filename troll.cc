@@ -7,4 +7,7 @@
 //
 
 #include "troll.h"
-troll::troll(): pc(120,25,15,"troll", 200) {}
+troll::troll(): pc(120,25,15,"troll", 200) {
+    skill* news = new trollnative;
+    skilllist.push_back(news);
+}

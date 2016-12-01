@@ -7,4 +7,7 @@
 //
 
 #include "goblin.h"
-goblin::goblin(): pc(110,15,20, "goblin", 150) {}
+goblin::goblin(): pc(110,15,20, "goblin", 150) {
+    skill* news = new goblinnative;
+    skilllist.push_back(news);
+}

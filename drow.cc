@@ -7,4 +7,7 @@
 //
 
 #include "drow.h"
-drow::drow(): pc(150,25,15,"drow", 200) {}
+drow::drow(): pc(150,25,15,"drow", 200) {
+    skill* news = new drownative;
+    skilllist.push_back(news);
+}

@@ -22,6 +22,10 @@
 #include "halfling.h"
 #include "boss.h"
 #include "shadenative.h"
+#include "vampirenative.h"
+#include "goblinnative.h"
+#include "drownative.h"
+#include "trollnative.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
@@ -31,6 +35,7 @@
 
 class pc: public info{
 protected:
+    int maxmp;
     int mp;
     int exp;
     int level;
@@ -69,6 +74,7 @@ public:
     void changehp(int demage);
     void attack(npc*, std::string& action);
     void changegold(int earn);
+    void naturalrestore();
     pc();
     pc(int h, int a, int d, std::string t, int m);
     ~pc();

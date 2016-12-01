@@ -641,9 +641,7 @@ void entercommand(floor &f){
             break;
         }
         pc* p = f.getpc();
-        if(p->gettype() == "troll"){
-            p->changehp(-5);
-        }
+        p->naturalrestore();
         p->levelup(f.action);
         output(f);
         bool state = pcdead(f);

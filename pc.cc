@@ -22,9 +22,7 @@ string itos(int i)  // convert int to string
     return s.str();
 }
 
-pc::pc(){}
-
-pc::pc(int h, int a, int d, string t, int m):level(1), mp(m), exp(0), hp(h), atk(a), def(d), type(t), maxhp(h), gold(0) {}
+pc::pc(int h, int a, int d, string t, int m): maxmp(m), level(1), mp(m), exp(0), hp(h), atk(a), def(d), type(t), maxhp(h), gold(0) {}
 
 void pc::setrow(int r){
     row = r;
@@ -41,6 +39,9 @@ void pc::changelevel(int l){
 }
 void pc::changemp(int m){
     mp += m;
+    if(mp > maxmp){
+        mp = maxmp;
+    }
 }
 int pc::getmp(){
     return mp;
@@ -95,7 +96,7 @@ void pc::beattack(npc* enermy, string& action){
     action = action + " deals ";
     float dmg = 0;
     dmg = eatk*100.0/(100.0 + def);
-    if((etype == "orc")&&(type == "goblin")){
+    if((etype == "orc")&&(check("goblinnative") == 1)){
         dmg = dmg * 1.5;
     }
     dmg = ceil(dmg);
@@ -110,7 +111,7 @@ void pc::beattack(npc* enermy, string& action){
     string d = itos(dmg);
     action = action + d + " damage to PC.";
     if(etype == "elf"){
-        if(type == "drow"){
+        if(check("drownative") == 1){
         }
         else{
             miss = rand() % 2;
@@ -183,7 +184,7 @@ void pc::attack(npc* enermy, string& action){
             changehp(-5);
         }
     }
-    if(type == "goblin"){
+    if(check("goblinnative") == 1){
         changegold(5);
         action = action + " PC steals 5 golds by goblin's skill.";
     }
@@ -205,7 +206,7 @@ void pc::usepotion(potion* p, string &action){
     string typ = p->gettype();
     int effect = p->geteffect();
     action = " PC uses " + typ + ".";
-    if(type == "drow"){
+    if(check("drownative") == 1){
         effect = effect * 1.5;
     }
     if(typ == "RH"){
@@ -241,8 +242,18 @@ int pc::check(string s){
     return 0;
 }
 
+void pc::naturalrestore(){
+    changemp(5);
+    if(check("trollnative") == 1){
+        changehp(-5);
+    }
+}
+
 bool pc::isdead() const{
     return gethp() > 0;
+}
+
+pc::pc(){
 }
 
 pc::~pc(){

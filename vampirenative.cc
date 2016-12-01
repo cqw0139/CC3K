@@ -6,7 +6,8 @@
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#include "vamiprenative.h"
+#include "vampirenative.h"
+
 
 vampirenative::vampirenative():
 skill("vampirenative","")
