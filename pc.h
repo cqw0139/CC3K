@@ -26,6 +26,8 @@
 #include "goblinnative.h"
 #include "drownative.h"
 #include "trollnative.h"
+#include "deathknative.h"
+#include "dragonknative.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
