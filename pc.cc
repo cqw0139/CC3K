@@ -22,7 +22,11 @@ string itos(int i)  // convert int to string
     return s.str();
 }
 
-pc::pc(int h, int a, int d, string t, int m): maxmp(m), level(1), mp(m), exp(0), hp(h), atk(a), def(d), type(t), maxhp(h), gold(0) {}
+pc::pc(int h, int a, int d, string t, int m): maxmp(m), level(1), mp(m), exp(0), hp(h), atk(a), def(d), type(t), maxhp(h), gold(0) {
+    defup=0.2*d;
+    atkup=0.2*a;
+    hpup=0.2*h;
+}
 
 void pc::setrow(int r){
     row = r;
@@ -78,10 +82,16 @@ void pc::levelup(string& action){
         exp -= 100;
         level++;
         action += " Congratulation! PC LEVEL UP!!!";
-        maxhp = maxhp * 1.2;
-        atk = atk*1.2;
-        def = def*1.2;
-        changehp(-maxhp);
+        maxhp += hpup;
+        changehp(-hpup);
+        changeatk(atkup);
+        changedef(defup);
+        if(level == 2){
+            if(type == "vampire"){
+                skill* news = new bloodslash;
+                skilllist.push_back(news);
+            }
+        }
     }
 }
 
@@ -180,13 +190,13 @@ void pc::attack(npc* enermy, string& action){
             changehp(5);
         }
         else{
-            action = action + " PC gain 5 HP by vampire's skill.";
+            action = action + " PC gain 5 HP by vampire's native passive.";
             changehp(-5);
         }
     }
     if(check("goblinnative") == 1){
         changegold(5);
-        action = action + " PC steals 5 golds by goblin's skill.";
+        action = action + " PC steals 5 golds by goblin's native passive.";
     }
     dmg = ceil(dmg);
     if(etype == "halfling"){
@@ -198,6 +208,10 @@ void pc::attack(npc* enermy, string& action){
     string d = itos(dmg);
     enermy->changehp(dmg);
     addexp(5);
+    if(check("bloodslash") == 1){
+        action = action + " BLOOD SLASH!!!";
+        changehp(-dmg);
+    }
     string h = itos(enermy->gethp());
     action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
 }

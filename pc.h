@@ -28,6 +28,7 @@
 #include "trollnative.h"
 #include "deathknative.h"
 #include "dragonknative.h"
+#include "bloodslash.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
@@ -44,6 +45,9 @@ protected:
     int hp;
     int atk;
     int def;
+    int hpup;
+    int atkup;
+    int defup;
     int maxhp;
     int gold;
     int row;
