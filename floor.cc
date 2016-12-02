@@ -2,9 +2,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "floor.h"
+#include <unistd.h>
+#include <string.h>
+#include <curses.h>
 #include <sstream>
 using namespace std;
+
+#include "floor.h"
 
 
 string inttos(int i)  // convert int to string
@@ -89,6 +93,7 @@ pc* floor::getpc() const{
 void floor::checkneighbour(int r, int c, int direction, char& ch, int& occ) const{
 	switch (direction){
 			case 0: {
+                //printw("%s", "current");
 				r = r - 1;
 				ch = gettype(r, c);
 				occ = isoccupied(r, c);
