@@ -27,14 +27,22 @@
 #include "drownative.h"
 #include "trollnative.h"
 #include "deathknative.h"
-#include "dragonknative.h"
-#include "bloodslash.h"
+#include "invisibleair.h"
+#include "excalibur.h"
+#include "bloodrage.h"
+#include "handofMidas.h"
+#include "grow.h"
+#include "poisonbody.h"
+#include "luckyseven.h"
+#include "frostmourne.h"
 #include "WD.h"
 #include "WA.h"
 #include "BD.h"
 #include "BA.h"
 #include "RH.h"
 #include "PH.h"
+
+
 
 class pc: public info{
 protected:
@@ -55,6 +63,7 @@ protected:
     std::string type;
     std::vector<skill*> skilllist;
 public:
+    static int deathk;
     void usepotion(potion*, std::string &action);
     void setrow(int r);
     void setcol(int c);
@@ -71,7 +80,7 @@ public:
     int getatk() const;
     int getdef() const;
     int getgold() const;
-    bool isdead() const;
+    bool isdead(std::string &action);
     std::string gettype() override;
     int check(std::string s);
     void changeatk(int effect);

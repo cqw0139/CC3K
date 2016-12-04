@@ -124,7 +124,7 @@ public:
     void initBasicMap();
     
     void setboss(boss* b);
-
+    
 	friend std::ostream &operator<<(std::ostream &out, floor &f);
     
 };

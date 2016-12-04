@@ -2,9 +2,17 @@
 #include <stdlib.h>
 #include <fstream>
 #include <time.h>
+#include <sstream>
 using namespace std;
 
 #include "control.h"
+
+string intos(int i)  // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
 
 void randompc(int &r, int &c){
 	r = rand() % 23 + 1;
@@ -37,7 +45,6 @@ void inittreasure(floor& f){
         treasuretype = rand() % 8 + 1;
         randominfo(row, col, f);
         if(treasuretype == 1){
-            cout << "There is dragon." << endl;
             dragontreasure* dt = new dragontreasure;
             char typ;
             int occ;
@@ -156,8 +163,8 @@ void initpc (floor& f){
         }else if(pctype == "t"){
             newpc = new troll;
             break;
-        }else if(pctype == "r"){
-            newpc = new dragonknight;
+        }else if(pctype == "s"){
+            newpc = new saber;
             break;
         }else if(pctype == "e"){
             newpc = new deathknight;
@@ -314,6 +321,33 @@ void movedead(floor& f){
 				npc* curnpc = static_cast<npc*>(curinfo);
 				bool state = curnpc->isdead();
 				if(!state){
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                     int g = curnpc->getgold();
                     p->changegold(g);
 					f.removeinfo(j, i);
@@ -378,6 +412,33 @@ void movedead(floor& f){
                     d->biebiemybaby();
                     f.removeinfo(j, i);
                     p->addexp(18);
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                 }
             }else if(occupied == 7){
                 info* curinfo = f.getinfo(j, i);
@@ -393,6 +454,33 @@ void movedead(floor& f){
                     p->addexp(36 * f.curFloor);
                     f.initstair(j, i);
                     f.action += " The floor boss is killed, and the floor stair appears.";
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                 }
             }
 		}

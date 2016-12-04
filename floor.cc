@@ -6,6 +6,7 @@
 #include <string.h>
 #include <curses.h>
 #include <sstream>
+#include <cstdlib>
 using namespace std;
 
 #include "floor.h"
@@ -241,7 +242,7 @@ void floor::movechar(int direction){
     checkneighbour(row, col, direction, ch, occ);
     if (ch == 'v' || ch == 'h' || ch == 'b')
     {
-        action = " PC cannot move to that place.";
+        action += " PC cannot move to that place.";
     }
     else if (occ == 5) {
         theFloor[row][col].movechar();
@@ -310,7 +311,7 @@ void floor::movechar(int direction){
         dragontreasure* dt = static_cast<dragontreasure*>(curinfo);
         int check = dt->check();
         if(check == 1){
-            action = " This is a dragon hoard, and its protector is still alive.";
+            action += " This is a dragon hoard, and its protector is still alive.";
         }else{
             theFloor[row][col].movechar();
             if (direction == 0){
@@ -348,16 +349,16 @@ void floor::movechar(int direction){
             person->setcol(col);
         }
     }else if (occ == 7){
-        action = " There is a floor boss on the cell, PC needs to defeat it before PC moves to that cell.";
+        action += " There is a floor boss on the cell, PC needs to defeat it before PC moves to that cell.";
     }
     else if (occ == 9) {
-        action = " PC moves to the next floor.";
+        action += " PC moves to the next floor.";
 			throw (occ);
     }
     else if (occ == 2 || occ == 3){
-        action = " There is a npc on the cell, PC needs to defeat it before PC moves to that cell.";
+        action += " There is a npc on the cell, PC needs to defeat it before PC moves to that cell.";
     }else if (occ == 4){
-        action = " There is a potion. PC can use u command to pick it.";
+        action += " There is a potion. PC can use u command to pick it.";
     }
     else
     {
@@ -402,9 +403,13 @@ void floor::movechar(int direction){
         theFloor[row][col].setchartype('p', person, 1);
         person->setrow(row);
         person->setcol(col);
-        action = " PC moves " + dir;
+        action += " PC moves " + dir;
         int whepotion = 0;
+        int r = 0;
+        int c = 0;
         for (int k = 0; k < 8; ++k){
+            r = row;
+            c = col;
             checkneighbour(row, col, k, ch, occ);
             if(occ == 4){
                 if(whepotion == 0){
@@ -414,37 +419,36 @@ void floor::movechar(int direction){
                 }
                 whepotion++;
                 if (k == 0){
-                    row--;
+                    r--;
                 }
                 else if (k == 1){
-                    row++;
+                    r++;
                 }
                 else if (k == 2){
-                    col--;
+                    c--;
                 }
                 else if (k == 3){
-                    col++;
+                    c++;
                 }
                 else if (k == 4){
-                    col--;
-                    row--;
+                    c--;
+                    r--;
                 }
                 else if (k == 5){
-                    row++;
-                    col--;
+                    r++;
+                    c--;
                 }
                 else if (k == 6){
-                    row--;
-                    col++;
+                    r--;
+                    c++;
                 }
                 else if (k == 7){
-                    row++;
-                    col++;
+                    r++;
+                    c++;
                 }
-                info* in = getinfo(row, col);
+                info* in = getinfo(r, c);
                 potion* p = static_cast<potion*>(in);
                 string potion = p->gettype();
-                cout << 1 << endl;
                 if((potion == "RH")&&(p->usedRH == 1)){
                     action += "a " + potion;
                 }else if((potion == "BA")&&(p->usedBA == 1)){
@@ -540,11 +544,12 @@ void floor::attacknpc(int r, int c){
     char etyp = getchartype(r,c);
     action = etyp;
     if((p != 2)&&(p != 3)&&(p!=7))
-        action = " PC can only attack a non-player character.";
+        action += " PC can only attack a non-player character.";
     else{
         if((etyp == 'm')&&(merchanthostile == 0)){
             merchant* curm = static_cast<merchant*>(curnpc);
             curm->hostile = 1;
+            merchanthostile = 1;
             MerchantStartAttack();
             person->attack(curnpc, action);
             action = action + " All merchants start to attack PC.";
@@ -559,8 +564,9 @@ void floor::npcattack(int r, int c){
     info* curinfo = theFloor[r][c].getinfo();
     npc* curnpc = static_cast<npc*>(curinfo);
     char etyp = getchartype(r,c);
-    if((p != 2)&&(p != 7))
-        cout << "??????" << endl;
+    if((p != 2)&&(p != 7)){
+        printw("??????????????????????????");
+    }
     else if (curnpc->gethostile())
     {
         action = action + etyp;
@@ -574,7 +580,7 @@ void floor::usepotion(int r, int c){
     info* curinfo = theFloor[r][c].getinfo();
     potion* curpotion = static_cast<potion*>(curinfo);
     if(p != 4)
-        action = " PC can only use a potion.";
+        action += " PC can only use a potion.";
     else
     {
         string potion = curpotion->gettype();
@@ -604,9 +610,24 @@ void floor::pickgold(int r, int c){
         action = " BUG!";
     }else{
         int g = curT->getvalue();
-        action = " PC picks " + inttos(g) + " golds.";
+        if(person->check("luckyseven") == 1){
+            int luckynum = 0;
+            luckynum = rand() % 7 + 1;
+            if(luckynum == 7){
+                action += "LUCKY SEVEN!!!!! Seven times gold!";
+                g = g*7;
+            }
+        }
+        action += " PC picks " + inttos(g) + " golds.";
         person->changegold(g);
         person->addexp(g);
+        if(person->check("handofMidas") == 1){
+            action += " Golden Touch!!!";
+            int g = curT->getvalue();
+            action += " PC creats " + inttos(g) + " golds.";
+            person->changegold(g);
+            person->addexp(g);
+        }
     }
 }
 
@@ -1107,6 +1128,30 @@ void floor::initBasicMap()
 void floor::setroom(int r, int c, int num){
     theFloor[r][c].setroom(num);
 }
+
+/*void floor::raceup(){
+    int lev = 0;
+    lev = person->getlevel();
+    if(lev == 2){
+        string typ = "";
+        typ = person->gettype();
+        if(typ == "shade"){
+            int a = person->gethp();
+            int b = person->getatk();
+            int c = person->getdef();
+            int g = person->getgold();
+            pc* newp = new darkmage(a,b,c,80);
+            newp->changegold(g);
+            int row = 0;
+            int col = 0;
+            getpcpos(row,col);
+            theFloor[row][col].setchartype('p',newp,1);
+//            delete person;
+            person = newp;
+            action += " PC Race Up !!! PC changes race to darkmage right now.";
+        }
+    }
+}*/
 
 void floor::settype(int r, int c, char type){
     theFloor[r][c].settype(type);

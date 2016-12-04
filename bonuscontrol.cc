@@ -5,11 +5,18 @@
 #include <unistd.h>
 #include <string.h>
 #include <curses.h>
+#include <sstream>
+#include "print.h"
 using namespace std;
 
 #include "bonuscontrol.h"
 
-
+string intos(int i)  // convert int to string
+{
+    stringstream s;
+    s << i;
+    return s.str();
+}
 
 void randompc(int &r, int &c){
 	r = rand() % 23 + 1;
@@ -139,7 +146,7 @@ void initpotion(floor& f){
 	}
 }
 
-void initpc (floor& f){
+/*void initpc (floor& f){
 	srand (time(NULL));
 	int row, col;
     string pctype;
@@ -161,8 +168,8 @@ void initpc (floor& f){
         }else if(pctype == "t"){
             newpc = new troll;
             break;
-        }else if(pctype == "r"){
-            newpc = new dragonknight;
+        }else if(pctype == "s"){
+            newpc = new saber;
             break;
         }else if(pctype == "e"){
             newpc = new deathknight;
@@ -174,6 +181,30 @@ void initpc (floor& f){
     }
 	randominfo(row ,col, f);
 	f.initpc(row, col, newpc);
+}*/
+
+void initpc (floor& f){
+    srand (time(NULL));
+    int row, col;
+    // determine the pc race by cilent
+    pc* newpc = nullptr;
+    char pctype = printpcinfo();
+    if(pctype == 's')
+        newpc = new shade();
+    else if(pctype == 'd')
+        newpc = new drow();
+    else if(pctype == 'v')
+        newpc = new vampire();
+    else if(pctype == 'g')
+        newpc = new goblin();
+    else if(pctype == 't')
+        newpc = new troll();
+    else if(pctype == 'a')
+        newpc = new saber();
+    else if(pctype == 'e')
+        newpc = new deathknight();
+    randominfo(row ,col, f);
+    f.initpc(row, col, newpc);
 }
 
 void initnpc(floor& f){
@@ -255,14 +286,22 @@ void initstair(floor& f){
 }
 
 void init(floor& f){
+    // init the floor
     f.init();
+    // init the basic map
     f.initBasicMap();
+    // init pc
     initpc(f);
+    printcontrol();
+    // init potion
     initpotion(f);
-    //initdragon(f);
+    // init npc
     initnpc(f);
+    // init stair
     initstair(f);
+    // init treasure
     inittreasure(f);
+    // print the map
     bonusoutput(f);
 }
 
@@ -324,6 +363,33 @@ void movedead(floor& f){
 					f.removeinfo(j, i);
                     p->addexp(12);
                     string etyp = curnpc->gettype();
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                     if(etyp == "merchant"){
                         treasure* newt = new mtreasure;
                         f.addinfo(j,i,newt);
@@ -383,6 +449,33 @@ void movedead(floor& f){
                     d->biebiemybaby();
                     f.removeinfo(j, i);
                     p->addexp(18);
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                 }
             }else if(occupied == 7){
                 info* curinfo = f.getinfo(j, i);
@@ -398,6 +491,33 @@ void movedead(floor& f){
                     p->addexp(36 * f.curFloor);
                     f.initstair(j, i);
                     f.action += " The floor boss is killed, and the floor stair appears.";
+                    if(p->check("bloodrage") == 1){
+                        int h = 0;
+                        h = curnpc->getmaxhp();
+                        h = 0.3 * h;
+                        if(h > 50){
+                            h = 50;
+                        }
+                        p->changehp(-h);
+                        string hp = "";
+                        hp = intos(h);
+                        f.action = f.action + " BloodRage!!! PC restores " + hp +" HP from dead NPC.";
+                    }
+                    if(p->check("grow") == 1){
+                        int x = 0;
+                        x = rand() % 2;
+                        int y = 0;
+                        y = rand() % 5 + 1;
+                        string eff = "";
+                        eff = intos(y);
+                        if(x == 0){
+                            p->changeatk(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" atk by eating dead NPC.";
+                        }else if (x == 1){
+                            p->changedef(y);
+                            f.action = f.action + " Grow!!! PC adds " + eff +" def by eating dead NPC.";
+                        }
+                    }
                 }
             }
 		}
@@ -636,7 +756,7 @@ int getscore(floor& f){
 
 bool pcdead(floor& f){
 	pc* curpc = f.getpc();
-	return curpc->isdead();
+	return curpc->isdead(f.action);
 }
 
 /*void entercommand(floor &f){
@@ -831,30 +951,30 @@ void output(floor& f){
     f.resetaction();
 }
 
-void command(floor &f){
-	char cmd;
+bool command(floor &f){
+    char cmd;
     int npcmove = 1;
-	while(1){
-		cmd = getch();
-		if(cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd'){
-			int direction = 0;
-			switch(cmd){
-				case 'w':{
-					direction = 0;
-					break;
-				}
-				case 's':{
-					direction = 1;
-					break;
-				}
-				case 'a':{
-					direction = 2;
-					break;
-				}
-				case 'd':{
-					direction = 3;
-					break;
-				}
+    while(1){
+        cmd = getch();
+        if(cmd == 'w' || cmd == 'a' || cmd == 's' || cmd == 'd'){
+            int direction = 0;
+            switch(cmd){
+                case 'w':{
+                    direction = 0;
+                    break;
+                }
+                case 's':{
+                    direction = 1;
+                    break;
+                }
+                case 'a':{
+                    direction = 2;
+                    break;
+                }
+                case 'd':{
+                    direction = 3;
+                    break;
+                }
                 case 'f':{
                     if(npcmove == 0){
                         npcmove = 1;
@@ -868,16 +988,16 @@ void command(floor &f){
                     command(f);
                     break;
                 }
-			}
-			char type;
-			int occ;
-			int row;
-			int col;
-			f.getpcpos(row, col);
-			f.checkneighbour(row, col, direction, type, occ);
-			refresh();
-			if (occ == 2 || occ == 3 || occ == 7){
-				attack(direction, f);
+            }
+            char type;
+            int occ;
+            int row;
+            int col;
+            f.getpcpos(row, col);
+            f.checkneighbour(row, col, direction, type, occ);
+            refresh();
+            if (occ == 2 || occ == 3 || occ == 7){
+                attack(direction, f);
                 if(npcmove == 1){
                     movenpc(f);
                 }
@@ -888,33 +1008,40 @@ void command(floor &f){
                     movenpc(f);
                 }
             }
-			else {
-				try {
-					movepc(direction, f);
+            else {
+                try {
+                    movepc(direction, f);
                     if(npcmove == 1){
                         movenpc(f);
                     }
-				}
-				catch( int a ){
-					f.clearFloor();
-					upstair(f);
-				}
-			}
-		}
+                }
+                catch( int a ){
+                    f.clearFloor();
+                    upstair(f);
+                }
+            }
+        }
+        else if (cmd == 'i'){
+            pc* curpc = f.getpc();
+            string type = curpc->gettype();
+            int level = curpc->getlevel();
+            printinfo(type, level);
+        }
         pc* p = f.getpc();
         p->naturalrestore();
         p->levelup(f.action);
-		bonusoutput(f);
+        bonusoutput(f);
         bool state = pcdead(f);
         if (!state){
             clear();
-            refresh();
+            move (5, 10);
             printw("You are dead with score: ");
             printw("%d",getscore(f));
             printw("\n");
-            break;
+            refresh();
+            return 1;
         }
-	}
+    }
 }
 
 
@@ -1051,4 +1178,8 @@ void bonusoutput(floor& f){
 	printw("%s", f.action.c_str());
 	move(30, 0);
     f.resetaction();
+}
+
+void clearFloor(floor& f){
+    f.clearFloor();
 }

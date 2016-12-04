@@ -30,7 +30,7 @@ void movepc(std::string direction, floor& f);
 void movenpc(floor& f);
 
 //
-void command(floor& f);
+bool command(floor& f);
 
 //
 
@@ -42,3 +42,5 @@ void setGivenMap(ifstream& map, floor& f);
 
 //
 void bonusoutput(floor& f);
+
+void clearFloor(floor& f);

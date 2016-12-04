@@ -4,6 +4,7 @@ using namespace std;
 
 npc::npc(int h, int a, int d, string t, int g, int host):
 hp(h),
+maxhp(h),
 atk(a),
 def(d),
 type(t),
@@ -13,6 +14,7 @@ hostile(host)
 
 npc::npc(int h, int a, int d, string t, int host):
 hp(h),
+maxhp(h),
 atk(a),
 def(d),
 type(t),
@@ -79,6 +81,10 @@ void npc::changedef(int effect){
 
 int npc::gethp() const{
     return hp;
+}
+
+int npc::getmaxhp() const{
+    return maxhp;
 }
 
 int npc::getatk() const{

@@ -16,6 +16,7 @@
 
 class npc: public info{
 protected:
+    int maxhp;
     int hp;
     int atk;
     int def;
@@ -34,6 +35,7 @@ public:
     int getrow() const;
     int getcol() const;
     int gethp() const;
+    int getmaxhp() const;
     int getatk() const;
     int getdef() const;
     bool isdead() const;

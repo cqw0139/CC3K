@@ -1,14 +1,14 @@
 //
-//  deadknight.cpp
+//  dragonknight.cpp
 //  cc3k
 //
 //  Created by ChengQiwei on 2016-11-30.
 //  Copyright © 2016 ChengQiwei. All rights reserved.
 //
 
-#include "deathknight.h"
+#include "saber.h"
 
-deathknight::deathknight(): pc(180,30,10,"deathknight", 500){
-    skill* news = new deathknative;
+saber::saber(): pc(180,36,30,"saber", 50) {
+    skill* news = new invisibleair;
     skilllist.push_back(news);
 }

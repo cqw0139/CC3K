@@ -14,6 +14,7 @@
 #include <sstream>
 using namespace std;
 
+int pc::deathk = 0;
 
 string itos(int i)  // convert int to string
 {
@@ -84,12 +85,68 @@ void pc::levelup(string& action){
         action += " Congratulation! PC LEVEL UP!!!";
         maxhp += hpup;
         changehp(-hpup);
+        action += " PC increases " + itos(hpup) + " maxHP, and restores " + itos(hpup) + " HP.";
         changeatk(atkup);
+        action += " PC increases " + itos(atkup) + " ATK.";
         changedef(defup);
+        action += " PC increases " + itos(defup) + " DEF.";
         if(level == 2){
             if(type == "vampire"){
-                skill* news = new bloodslash;
+                action += " PC Race Up !!! PC changes race to Bloodseeker right now.";
+                type = "Bloodseeker";
+                level = 1;
+                exp = 0;
+                skill* news = new bloodrage;
                 skilllist.push_back(news);
+                action += " PC learns a new skill Bloodrage.";
+            }else if(type == "goblin"){
+                action += " PC Race Up !!! PC changes race to Alchemist right now.";
+                type = "Alchemist";
+                level = 1;
+                exp = 0;
+                skill* news = new handofMidas;
+                skilllist.push_back(news);
+                action += " PC learns a new skill handofMidas.";
+            }else if(type == "troll"){
+                action += " PC Race Up !!! PC changes race to Devil right now.";
+                type = "Devil";
+                level = 1;
+                exp = 0;
+                skill* news = new grow;
+                skilllist.push_back(news);
+                action += " PC learns a new skill grow.";
+            }else if(type == "drow"){
+                action += " PC Race Up !!! PC changes race to Venomancer right now.";
+                type = "Venomancer";
+                level = 1;
+                exp = 0;
+                skill* news = new poisonbody;
+                skilllist.push_back(news);
+                action += " PC learns a new skill poisonbody.";
+            }else if(type == "shade"){
+                action += " PC Race Up !!! PC changes race to Dark Mage right now.";
+                type = "Dark Mage";
+                level = 1;
+                exp = 0;
+                skill* news = new luckyseven;
+                skilllist.push_back(news);
+                action += " PC learns a new skill luckyseven.";
+            }else if(type == "deathknight"){
+                action += " PC Race Up !!! PC changes race to Lich King right now.";
+                type = "Lich King";
+                level = 1;
+                exp = 0;
+                skill* news = new frostmourne;
+                skilllist.push_back(news);
+                action += " PC learns a new skill frostmourne.";
+            }else if(type == "saber"){
+                action += " PC Race Up !!! PC changes race to Royal Saber right now.";
+                type = "Royal Saber";
+                level = 1;
+                exp = 0;
+                skill* news = new excalibur;
+                skilllist.push_back(news);
+                action += " PC learns a new skill excalibur.";
             }
         }
     }
@@ -100,10 +157,8 @@ void pc::beattack(npc* enermy, string& action){
     string etyp = &action[length-1];
     action.pop_back();
     action += " ";
-    action += etyp;
     int eatk = enermy->getatk();
     string etype = enermy->gettype();
-    action = action + " deals ";
     float dmg = 0;
     dmg = eatk*100.0/(100.0 + def);
     if((etype == "orc")&&(check("goblinnative") == 1)){
@@ -111,15 +166,33 @@ void pc::beattack(npc* enermy, string& action){
     }
     dmg = ceil(dmg);
     int miss = rand() % 2;
+    string d = "";
     if(miss == 0){
         dmg = 0;
+        action = action + etyp + " attacks miss.";
+    }else{
+        if(check("invisibleair") == 1){
+            if(dmg<=5) {
+                d = itos(dmg - 1);
+                dmg = 1;
+                action += "Invisible air protects PC and reduces " + d + " damages. ";
+            }else{
+                dmg -= 5;
+                action += "Invisible air protects PC and reduces 5 damages. ";
+            }
+        }
+        d = itos(dmg);
+        action = action + etyp + " deals " + d + " damage to PC.";
+        if(check("poisonbody") == 1){
+            enermy->changehp(5);
+            action = action + " " + etyp + " loses 5 HP since it touches PC's poisonbody(" + itos(enermy->gethp()) + " HP).";
+        }
     }
     changehp(dmg);
     if(dmg > 0){
         addexp(3);
     }
-    string d = itos(dmg);
-    action = action + d + " damage to PC.";
+    dmg = eatk*100.0/(100.0 + def);
     if(etype == "elf"){
         if(check("drownative") == 1){
         }
@@ -127,9 +200,25 @@ void pc::beattack(npc* enermy, string& action){
             miss = rand() % 2;
             if(miss == 0){
                 dmg = 0;
+                action = action + " " + etyp + " attacks miss.";
+            }else{
+                if(check("invisibleair") == 1){
+                    if(dmg<=5) {
+                        d = itos(dmg - 1);
+                        dmg = 1;
+                        action += " Invisible air protects PC and reduces " + d + " damages.";
+                    }else{
+                        dmg -= 5;
+                        action += " Invisible air protects PC and reduces 5 damages.";
+                    }
+                }
+                d = itos(dmg);
+                action = action + " " + etyp + " deals " + d + " damage to PC.";
+                if(check("poisonbody") == 1){
+                    enermy->changehp(5);
+                    action = action + " " + etyp + " loses 5 HP since it touches PC's poisonbody(" + itos(enermy->gethp()) + " HP).";
+                }
             }
-            d = itos(dmg);
-            action = action + " " + etyp + " deals " + d + " damage to pc.";
             changehp(dmg);
             if(dmg > 0){
                 addexp(3);
@@ -190,30 +279,78 @@ void pc::attack(npc* enermy, string& action){
             changehp(5);
         }
         else{
-            action = action + " PC gain 5 HP by vampire's native passive.";
+            action = action + " PC gain 5 HP by vampire's talent.";
             changehp(-5);
         }
     }
     if(check("goblinnative") == 1){
         changegold(5);
-        action = action + " PC steals 5 golds by goblin's native passive.";
+        action = action + " PC steals 5 golds by goblin's talent.";
     }
     dmg = ceil(dmg);
-    if(etype == "halfling"){
-        int miss = rand() % 2;
-        if(miss == 0){
+    string h;
+    int miss = rand() % 2;
+    if(check("luckyseven") == 1){
+        int luckynum = 0;
+        luckynum = rand() % 7 + 1;
+        if(luckynum == 7){
+            enermy->changehp(99999);
+            action = action + " LUCKY SEVEN!!!!! PC kills "+ etype +" immediately!";
+        }else{
+            if((miss == 0)&&(etype == "halfling")){
+                dmg = 0;
+                action = action + " PC attacks miss.";
+            }else{
+                int exca = 0;
+                exca = rand() % 7 + 1;
+                if(check("frostmourne") == 1){
+                    dmg = (atk*100.0)/100.0;
+                }else if((check("excalibur") == 1)&&(exca == 7)){
+                    dmg = 3 * dmg;
+                }
+                string d = itos(dmg);
+                enermy->changehp(dmg);
+                h = itos(enermy->gethp());
+                if(check("frostmourne") == 1){
+                    action += " PC deals " + d + " damage to " + etyp + " (" + h + " HP) by FrostMourne.";
+                }else if((check("excalibur") == 1)&&(exca == 7)){
+                    action = action + " EXCALIBUR!!!!!" + " PC deals " + d + " damage to " + etyp + " (" + h + " HP) and restores " + d + " HP by Excalibur.";
+                    changehp(-dmg);
+                }else{
+                    action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
+                }
+            }
+        }
+    }else{
+        if((miss == 0)&&(etype == "halfling")){
             dmg = 0;
+            action = action + " PC attacks miss.";
+        }else{
+            int exca = 0;
+            exca = rand() % 7 + 1;
+            if(check("frostmourne") == 1){
+                dmg = (atk*100.0)/100.0;
+            }else if((check("excalibur") == 1)&&(exca == 7)){
+                dmg = 3 * dmg;
+            }
+            string d = itos(dmg);
+            enermy->changehp(dmg);
+            h = itos(enermy->gethp());
+            if(check("frostmourne") == 1){
+                action += " PC deals " + d + " damage to " + etyp + " (" + h + " HP) by FrostMourne.";
+            }else if((check("excalibur") == 1)&&(exca == 7)){
+                action = action + " EXCALIBUR!!!!!" + " PC deals " + d + " damage to " + etyp + " (" + h + " HP) and restores " + d + " HP by Excalibur.";
+                changehp(-dmg);
+            }else{
+                action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
+            }
         }
     }
-    string d = itos(dmg);
-    enermy->changehp(dmg);
     addexp(5);
-    if(check("bloodslash") == 1){
+/*    if(check("bloodslash") == 1){
         action = action + " BLOOD SLASH!!!";
         changehp(-dmg);
-    }
-    string h = itos(enermy->gethp());
-    action = action + " PC deals " + d + " damage to " + etyp + " (" + h + " HP).";
+    }*/
 }
 
 void pc::usepotion(potion* p, string &action){
@@ -263,7 +400,16 @@ void pc::naturalrestore(){
     }
 }
 
-bool pc::isdead() const{
+bool pc::isdead(string &action){
+    if(check("deathknative") == 1){
+        if(deathk == 0){
+            if(gethp() <= 0){
+                action = action + " PC returns from the death and restores 100 HP by deathknight's talent.";
+                changehp(-100);
+                deathk = 1;
+            }
+        }
+    }
     return gethp() > 0;
 }
 
