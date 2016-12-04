@@ -90,6 +90,7 @@ public:
     void attack(npc*, std::string& action);
     void changegold(int earn);
     void naturalrestore();
+    void cure(std::string& action);
     pc();
     pc(int h, int a, int d, std::string t, int m);
     ~pc();

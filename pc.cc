@@ -413,6 +413,12 @@ bool pc::isdead(string &action){
     return gethp() > 0;
 }
 
+void pc::cure(string& action){
+    action += " PC uses cure and restores 50 HP.";
+    mp = 0;
+    changehp(-50);
+}
+
 pc::pc(){
 }
 
