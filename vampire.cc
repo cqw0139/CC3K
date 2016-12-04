@@ -9,7 +9,7 @@
 #include "vampire.h"
 
 
-vampire::vampire(): pc(150,25,25,"vampire", 100) {
+vampire::vampire(): pc(50,25,25,"vampire", 100) {
     skill* news = new vampirenative;
     skilllist.push_back(news);
 }
