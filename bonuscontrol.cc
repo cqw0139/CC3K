@@ -11,6 +11,8 @@ using namespace std;
 
 #include "bonuscontrol.h"
 
+extern bool newmap;
+
 string intos(int i)  // convert int to string
 {
     stringstream s;
@@ -40,7 +42,7 @@ void randominfo(int& row, int& col, floor& f){
 	}
 }
 
-void inittreasure(floor& f){
+void bonusinittreasure(floor& f){
     int row, col;
     int treasuretype;
     treasure* newtreasure;
@@ -49,7 +51,6 @@ void inittreasure(floor& f){
         treasuretype = rand() % 8 + 1;
         randominfo(row, col, f);
         if(treasuretype == 1){
-//            cout << "There is dragon." << endl;
             dragontreasure* dt = new dragontreasure;
             char typ;
             int occ;
@@ -106,7 +107,7 @@ void inittreasure(floor& f){
     }
 }
 
-void initpotion(floor& f){
+void bonusinitpotion(floor& f){
 	srand (time(NULL));
 	int row, col;
 	int potiontype;
@@ -146,48 +147,14 @@ void initpotion(floor& f){
 	}
 }
 
-/*void initpc (floor& f){
-	srand (time(NULL));
-	int row, col;
-    string pctype;
-    pc* newpc;
-    cout << "please enter the race you want to play" << endl;
-    while(cin >> pctype){
-        if(pctype == "s"){
-            newpc = new shade;
-            break;
-        }else if(pctype == "d"){
-            newpc = new drow;
-            break;
-        }else if(pctype == "v"){
-            newpc = new vampire;
-            break;
-        }else if(pctype == "g"){
-            newpc = new goblin;
-            break;
-        }else if(pctype == "t"){
-            newpc = new troll;
-            break;
-        }else if(pctype == "s"){
-            newpc = new saber;
-            break;
-        }else if(pctype == "e"){
-            newpc = new deathknight;
-            break;
-        }else{
-            cout << "Please enter one of s, d, v, g, t, r or e to choose a race." << endl;
-            continue;
-        }
-    }
-	randominfo(row ,col, f);
-	f.initpc(row, col, newpc);
-}*/
-
-void initpc (floor& f){
+void bonusinitpc (floor& f){
     srand (time(NULL));
     int row, col;
     // determine the pc race by cilent
-    pc* newpc = nullptr;
+    if (newmap)
+        f.getpcpos(row, col);
+    pc* newpc = f.getpc();
+    delete newpc;
     char pctype = printpcinfo();
     if(pctype == 's')
         newpc = new shade();
@@ -203,11 +170,12 @@ void initpc (floor& f){
         newpc = new saber();
     else if(pctype == 'e')
         newpc = new deathknight();
-    randominfo(row ,col, f);
+    if (!newmap)
+       randominfo(row ,col, f);
     f.initpc(row, col, newpc);
 }
 
-void initnpc(floor& f){
+void bonusinitnpc(floor& f){
 	srand (time(NULL));
 	int row, col;
 	int npctype;
@@ -232,120 +200,85 @@ void initnpc(floor& f){
 	}
 }
 
-void initstair(floor& f){
+void bonusinitstair(floor& f){
 	srand (time(NULL));
     int row, col;
-    randominfo(row, col, f);
+    int pcrow, pccol;
+    f.getpcpos(pcrow, pccol);
+    int curroom = f.getroom(pcrow, pccol);
+    while (1){
+        randominfo(row, col, f);
+        if (curroom != f.getroom(row, col)) break;
+    }
     boss* newboss = new boss;
     newboss->alive = 1;
-//    cout << newboss->gethp() << endl;
     f.setboss(newboss);
     npc* newnpc = newboss;
     f.addinfo(row, col, newnpc);
-/*    int r = 0;
-    int c = 0;
-    f.initstair(row, col);
-    char ch;
-    int occ;
-    for(int i = 0; i < 8; i++){
-        f.checkneighbour(row,col,i, ch, occ);
-        if((occ == 0)&&(ch == 'p')){
-            if(i == 0) {
-                r = row - 1;
-                c = col;
-            }else if(i == 1){
-                r = row + 1;
-                c = col;
-            }else if(i == 2){
-                r = row;
-                c = col - 1;
-            }else if(i == 3){
-                r = row;
-                c = col + 1;
-            }else if(i == 4){
-                r = row - 1;
-                c = col - 1;
-            }else if(i == 5){
-                r = row + 1;
-                c = col - 1;
-            }else if(i == 6){
-                r = row - 1;
-                c = col + 1;
-            }else if(i == 7){
-                r = row + 1;
-                c = col + 1;
-            }
-            boss* newboss = new boss;
-            newboss->alive = 1;
-            f.setboss(newboss);
-            npc* newnpc = newboss;
-            f.addinfo(r, c, newnpc);
-            break;
-        }
-    }*/
 }
 
-void init(floor& f){
+void bonusinit(floor& f){
     // init the floor
     f.init();
     // init the basic map
     f.initBasicMap();
     // init pc
-    initpc(f);
+    bonusinitpc(f);
     printcontrol();
     // init potion
-    initpotion(f);
+    bonusinitpotion(f);
     // init npc
-    initnpc(f);
+    bonusinitnpc(f);
     // init stair
-    initstair(f);
+    bonusinitstair(f);
     // init treasure
-    inittreasure(f);
+    bonusinittreasure(f);
     // print the map
     bonusoutput(f);
 }
 
-void upstair(floor& f){
+void bonusupstair(floor& f){
 	pc* curpc = f.getpc();
 	srand (time(NULL));
 	int row, col;
 	randominfo(row, col ,f);
-	f.initpc(row, col, curpc);
-    initstair(f);
-	initpotion(f);
-	//initdragon(f);
-	initnpc(f);
-	inittreasure(f);
+	f.setpc(row, col, curpc);
+    bonusinitstair(f);
+	bonusinitpotion(f);
+	bonusinitnpc(f);
+	bonusinittreasure(f);
 }
 
-void movepc(int direction, floor& f){
+bool bonusmovepc(int direction, floor& f){
+    bool state = false;
 	if (direction == 0){
-		f.movechar(0);
+		state = f.movechar(0);
 	}
 	else if(direction == 1){
-		f.movechar(1);
+		state = f.movechar(1);
 	}
 	else if(direction == 2){
-		f.movechar(2);
+		state = f.movechar(2);
 	}
 	else if(direction == 3){
-		f.movechar(3);
+		state = f.movechar(3);
 	}
 	else if(direction == 4){
-		f.movechar(4);
+		state = f.movechar(4);
 	}
 	else if(direction == 5){
-		f.movechar(5);
+		state = f.movechar(5);
 	}
 	else if(direction == 6){
-		f.movechar(6);
+		state = f.movechar(6);
 	}
 	else if(direction == 7){
-		f.movechar(7);
+		state = f.movechar(7);
 	}
+    return state;
 }
 
-void movedead(floor& f){
+void bonusmovedead(floor& f){
     pc* p = f.getpc();
 	for (int i = 1; i < 78; ++i)
 	{
@@ -400,7 +333,7 @@ void movedead(floor& f){
                         char ch;
                         int occ;
                         int k;
-                        int check;
+                        int check = 0;
                         while(check <= 50){
                             check++;
                             k = rand() % 4;
@@ -420,18 +353,6 @@ void movedead(floor& f){
                                 }else if(k == 3){
                                     r = j;
                                     c = i + 1;
-                                }else if(k == 4){
-                                    r = j - 1;
-                                    c = i - 1;
-                                }else if(k == 5){
-                                    r = j + 1;
-                                    c = i - 1;
-                                }else if(k == 6){
-                                    r = j - 1;
-                                    c = i + 1;
-                                }else if(k == 7){
-                                    r = j + 1;
-                                    c = i + 1;
                                 }
                                 f.addinfo(r,c,newt2);
                                 break;
@@ -439,7 +360,8 @@ void movedead(floor& f){
                         }
                     }
                 }
-            }else if(occupied == 3){
+            }
+            else if(occupied == 3){
                 info* curinfo = f.getinfo(j, i);
                 npc* curnpc = static_cast<npc*>(curinfo);
                 bool state = curnpc->isdead();
@@ -477,7 +399,8 @@ void movedead(floor& f){
                         }
                     }
                 }
-            }else if(occupied == 7){
+            }
+            else if(occupied == 7){
                 info* curinfo = f.getinfo(j, i);
                 npc* curnpc = static_cast<npc*>(curinfo);
                 bool state = curnpc->isdead();
@@ -524,13 +447,12 @@ void movedead(floor& f){
 	}
 }
 
-void movenpc(floor& f){
+void bonusmovenpc(floor& f){
 	srand (time(NULL));
     char ch;
     int occ;
     int direction;
-    //int count = 0;
-    movedead(f);
+    bonusmovedead(f);
     for (int i = 1; i < 78; ++i)
     {
         for (int j = 1; j < 24; ++j)
@@ -549,19 +471,16 @@ void movenpc(floor& f){
                 }
                 // check move after
                 if (f.getmove(j, i)) continue;
-                while (1){
-                	int count = 1;
+                int count = 0;
+                while (count < 50){
+                    count++;
                     direction = rand() % 8;
                     char ch;
                     int occ;
                     f.checkneighbour(j, i, direction, ch, occ);
-                    count++;
-                    if (count == 50) {
-                    	direction = -1;
-                    	break;
-                    }
                     if ((ch == 'p')&&(occ == 0)) break;
                 }
+                if (count == 50) direction = -1;
                 f.movenpc(j, i, direction);
             }
             else if(occupied == 6){
@@ -600,7 +519,7 @@ void movenpc(floor& f){
     }
 }
 
-void moveusedpotion(floor& f){
+void bonusmoveusedpotion(floor& f){
     for (int i = 1; i < 78; ++i)
     {
         for (int  j= 1; j < 24; ++j)
@@ -619,7 +538,7 @@ void moveusedpotion(floor& f){
     }
 }
 
-void attack (int direction, floor& f){
+void bonusattack (int direction, floor& f){
     int row, col;
     f.getpcpos(row, col);
     if (direction == 0){
@@ -660,7 +579,7 @@ void attack (int direction, floor& f){
     }
 }
 
-void usepotion(int direction, floor& f){
+void bonususepotion(int direction, floor& f){
     int row, col;
     f.getpcpos(row, col);
     if (direction == 0){
@@ -699,47 +618,6 @@ void usepotion(int direction, floor& f){
         col++;
         f.usepotion(row, col);
     }
-}
-
-void attack (string direction, floor& f){
-	int row, col;
-	f.getpcpos(row, col);
-	if (direction == "no"){
-		row--;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "so"){
-		row++;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "ea"){
-		col++;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "we"){
-		col--;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "ne"){
-		col++;
-		row--;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "nw"){
-		row--;
-		col--;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "sw"){
-		row++;
-		col--;
-		f.attacknpc(row, col);
-	}
-	else if (direction == "se"){
-		row++;
-		col++;
-		f.attacknpc(row, col);
-	}
 }
 
 int getscore(floor& f){
@@ -759,196 +637,154 @@ bool pcdead(floor& f){
 	return curpc->isdead(f.action);
 }
 
-/*void entercommand(floor &f){
-	string command;
-    int npcmove = 1;
-	while(cin >> command){
-		if(command == "m"){
-			string mv;
-			cin >> mv;
-			try {
-				move (mv, f);
-                if(npcmove == 1){
-                    movenpc(f);
-                }
-			} catch ( int a ) {
-				f.clearFloor();
-				upstair(f);
-			}
-		}
-		else if(command == "a"){
-			string dir;
-			cin >> dir;
-			attack (dir, f);
-            if(npcmove == 1){
-                movenpc(f);
-            }
-		}
-		else if(command == "u"){
-            string dir;
-            cin >> dir;
-            usepotion(dir, f);
-            moveusedpotion(f);
-            if(npcmove == 1){
-                movenpc(f);
-            }
-        }else if(command == "f"){
-            if(npcmove == 0){
-                npcmove = 1;
-            }else if(npcmove == 1){
-                npcmove = 0;
-            }
-        }else if(command == "r"){
-            floor f;
-            init(f);
-            entercommand(f);
-            break;
-        }else if(command == "q"){
-            break;
-        }
-        pc* p = f.getpc();
-        p->naturalrestore();
-        p->levelup(f.action);
-        output(f);
-        bool state = pcdead(f);
-        if (!state){
-            cout << "You are dead with score: " << getscore(f) << endl;
-            break;
-        }
-	}
-}*/
-
-void setGivenMap(ifstream& map, floor& f){
-	f.init();
-	string line;
-	for (int i = 0; i < 25; ++i)
-	{
-		getline(map, line);
-		//cout << line << endl;
-		for (int j = 0; j < 79; ++j)
-		{
-			if (line[j] == '|')
-				f.settype(i, j, 'v');
-			else if (line[j] == '-')
-				f.settype(i, j, 'h');
-			else if (line[j] == ' ') 
-				f.settype(i, j, 'b');
-			else if (line[j] == '#') 
-				f.settype(i, j, 'c');
-			else if (line[j] == '+')
-				f.settype(i, j, 'd');
-			else if (line[j] == '@'){
-				f.settype(i, j, 'p');
-				pc* curpc = new pc();
-				f.initpc(i, j, curpc);
-			}
-			else if (line[j] == 'E'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new elf();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'H'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new human();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'W'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new dwarf();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'O'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new orc();
-				f.addinfo(i, j, curnpc);
-			}	
-			else if (line[j] == 'M'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new merchant();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'D'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new dragon();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'L'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new halfling();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == 'L'){
-				f.settype(i, j, 'p');
-				npc* curnpc = new halfling();
-				f.addinfo(i, j, curnpc);
-			}
-			else if (line[j] == '0'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new RH();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '1'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new BA();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '2'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new BD();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '3'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new PH();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '4'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new WA();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '5'){
-				f.settype(i, j, 'p');
-				potion* curpotion = new WD();
-				f.addinfo(i, j, curpotion);
-			}
-			else if (line[j] == '6'){
-				f.settype(i, j, 'p');
-				treasure* curtreasure = new htreasure();
-				f.addinfo(i, j, curtreasure);
-			}
-			else if (line[j] == '7'){
-				f.settype(i, j, 'p');
-				treasure* curtreasure = new streasure();
-				f.addinfo(i, j, curtreasure);
-			}
-			else if (line[j] == '8'){
-				f.settype(i, j, 'p');
-				treasure* curtreasure = new mtreasure();
-				f.addinfo(i, j, curtreasure);
-			}
-			else if (line[j] == '9'){
-				f.settype(i, j, 'p');
-				treasure* curtreasure = new dragontreasure();
-				f.addinfo(i, j, curtreasure);
-			}
-			else
-				f.settype(i, j, 'p');
-		}
-	}
+bool iswon(floor& f){
+    return f.curFloor == 6;
 }
 
-void output(floor& f){
-	pc *curpc= f.getpc();
-	cout << f;
-	cout << "Race: " << curpc->gettype() << " " << "Gold: " << curpc->getgold();
-	cout << " Level: " << curpc->getlevel() << "    floor: " << f.curFloor << endl;
-    cout << "HP: " << curpc->gethp() <<"   MP: " << curpc->getmp();
-    cout << "   Exp: " << curpc->getexp() << "/100" << endl;
-	cout << "Atk: " << curpc->getatk() << endl;
-	cout << "Def: " << curpc->getdef() << endl;
-    cout << "Action:" << f.action << endl;
-    f.resetaction();
+void setGivenMap(ifstream& map, floor& f){
+    f.init();
+    string line;
+    for (int i = 0; i < 25; ++i)
+    {
+        getline(map, line);
+        for (int j = 0; j < 79; ++j)
+        {
+            int cur = rand() % 5 + 1;
+            if (line[j] == '|')
+                f.settype(i, j, 'v');
+            else if (line[j] == '-')
+                f.settype(i, j, 'h');
+            else if (line[j] == ' ') 
+                f.settype(i, j, 'b');
+            else if (line[j] == '#') 
+                f.settype(i, j, 'c');
+            else if (line[j] == '+')
+                f.settype(i, j, 'd');
+            else if (line[j] == '@'){
+                f.settype(i, j, 'p');
+                pc* curpc = new pc();
+                f.initpc(i, j, curpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'E'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new elf();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '\\'){
+                f.settype(i, j, 'p');
+                f.initstair(i, j);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'H'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new human();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'W'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new dwarf();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'O'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new orc();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }   
+            else if (line[j] == 'M'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new merchant();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'D'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new dragon();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'L'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new halfling();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == 'L'){
+                f.settype(i, j, 'p');
+                npc* curnpc = new halfling();
+                f.addinfo(i, j, curnpc);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '0'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new RH();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '1'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new BA();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '2'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new BD();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '3'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new PH();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '4'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new WA();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '5'){
+                f.settype(i, j, 'p');
+                potion* curpotion = new WD();
+                f.addinfo(i, j, curpotion);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '6'){
+                f.settype(i, j, 'p');
+                treasure* curtreasure = new htreasure();
+                f.addinfo(i, j, curtreasure);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '7'){
+                f.settype(i, j, 'p');
+                treasure* curtreasure = new streasure();
+                f.addinfo(i, j, curtreasure);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '8'){
+                f.settype(i, j, 'p');
+                treasure* curtreasure = new mtreasure();
+                f.addinfo(i, j, curtreasure);
+                f.setroom(i, j, cur);
+            }
+            else if (line[j] == '9'){
+                f.settype(i, j, 'p');
+                treasure* curtreasure = new dragontreasure();
+                f.addinfo(i, j, curtreasure);
+                f.setroom(i, j, cur);
+            }
+            else{
+                f.settype(i, j, 'p');
+                f.setroom(i, j, cur);
+            }
+        }
+    }
 }
 
 bool command(floor &f){
@@ -975,19 +811,6 @@ bool command(floor &f){
                     direction = 3;
                     break;
                 }
-                case 'f':{
-                    if(npcmove == 0){
-                        npcmove = 1;
-                    }else if(npcmove == 1){
-                        npcmove = 0;
-                    }
-                }
-                case 'r':{
-                    floor f;
-                    init(f);
-                    command(f);
-                    break;
-                }
             }
             char type;
             int occ;
@@ -997,28 +820,26 @@ bool command(floor &f){
             f.checkneighbour(row, col, direction, type, occ);
             refresh();
             if (occ == 2 || occ == 3 || occ == 7){
-                attack(direction, f);
+                bonusattack(direction, f);
                 if(npcmove == 1){
-                    movenpc(f);
+                    bonusmovenpc(f);
                 }
             }else if(occ == 4){
-                usepotion(direction, f);
-                moveusedpotion(f);
+                bonususepotion(direction, f);
+                bonusmoveusedpotion(f);
                 if(npcmove == 1){
-                    movenpc(f);
+                    bonusmovenpc(f);
                 }
             }
             else {
-                try {
-                    movepc(direction, f);
-                    if(npcmove == 1){
-                        movenpc(f);
-                    }
+            bool state = bonusmovepc(direction, f);
+            if(npcmove == 1){
+                    bonusmovenpc(f);
                 }
-                catch( int a ){
-                    f.clearFloor();
-                    upstair(f);
-                }
+            if (state){
+                f.clearFloor();
+                bonusupstair(f);
+            }
             }
         }
         else if (cmd == 'i'){
@@ -1027,9 +848,31 @@ bool command(floor &f){
             int level = curpc->getlevel();
             printinfo(type, level);
         }
+        else if(cmd == 'f'){
+            if(npcmove == 0){
+                        npcmove = 1;
+                    }else if(npcmove == 1){
+                        npcmove = 0;
+                    }
+        }
+        else if(cmd == 'r'){
+            floor f;
+            bonusinit(f);
+            command(f);
+            break;
+        }
+        else if(cmd == 'q'){
+            break;
+        }
+        else if(cmd == 'c'){
+            pc* curpc = f.getpc();
+            curpc->cure(f.action);
+        }
         pc* p = f.getpc();
         p->naturalrestore();
         p->levelup(f.action);
+        bonusmovedead(f);
+        bonusmoveusedpotion(f);
         bonusoutput(f);
         bool state = pcdead(f);
         if (!state){
@@ -1038,8 +881,18 @@ bool command(floor &f){
             printw("You are dead with score: ");
             printw("%d",getscore(f));
             printw("\n");
-            refresh();
+            endwin();
+            printLose();
             return 1;
+        }
+        state = iswon(f);
+        if (state) {
+            printw("You win with score: ");
+            printw("%d",getscore(f));
+            printw("\n");
+            endwin();
+            printWin();
+            return 0;
         }
     }
 }
@@ -1140,7 +993,6 @@ void printMap(floor &f){
 				}
 			}
 		}
-		//printw("%c", '\n');
 		refresh();
 	}
 }

@@ -8,41 +8,57 @@
 using namespace std;
 
 #include "bonuscontrol.h"
+#include "control.h"
 #include "print.h"
 
-
+bool newmap = 0;
 
 int main(int argc, char const *argv[])
 {
     initscr();
     printLogo();
-    //char a[100];
+    endwin(); 
+    cout << "choose the level that you wanna play" << endl << "n(Normal) or a(Advanced)" << endl;
+    string s;
     floor f;
-    //getstr(a);
-    //endwin();
-    while (1){
-        init(f);
-        bool state = command(f);
-        if (state) {
-            move(6, 10);
-            printw("%s", "print q to quit or r to restart.");
-            refresh();
-            char c;
-            c = getch();
-            if (c == 'q') break;
-            else {
-                clear();
-                clearFloor(f);
+    while(1){
+        cin >> s;
+        if (s == "n"){
+            if (argc > 1){
+                ifstream file (argv[argc-1]);
+                setGivenMap(file, f);
+                newmap = 1;
+                initpc(f);
+                output(f);
+                entercommand(f);
             }
+            else{
+                init(f);
+                entercommand(f);
+            }
+            break;
+        }
+        else if (s == "a"){
+            while (1){
+            initscr();
+            if (argc > 1){
+                ifstream file (argv[argc-1]);
+                setGivenMap(file, f);
+                newmap = 1;
+                bonusinitpc(f);
+                bonusoutput(f);
+                command(f);
+            }
+            else{
+                bonusinit(f);
+                command(f);
+            }
+            endwin();
+            break;
         }
     }
-    endwin();
+    else
+        cout << "please enter n(Normal) or a(Advanced)" << endl;
+    }
     return 0;
-    //cout << "You are dead with score: " << getscore(f) << endl;
-    /*floor f;
-     ifstream filein;
-     filein.open("samplemap.txt");
-     setGivenMap(filein, f);
-     cout << f;
-     filein.close();*/
 }

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "cell.h"
+#include "print.h"
 #include "floor.h"
+#include "bonuscontrol.h"
 
 // create a random row and column
 void random(int& r, int& c);
@@ -24,7 +26,7 @@ void init(floor& r);
 void inittreasure(floor& f);
 
 // move the char by the direction
-void move(std::string direction, floor& f);
+bool move(std::string direction, floor& f);
 
 // auto move the npc
 void movenpc(floor& f);

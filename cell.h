@@ -9,7 +9,6 @@
 #include "vampire.h"
 #include "saber.h"
 #include "deathknight.h"
-#include "darkmage.h"
 #include "RH.h"
 #include "BA.h"
 #include "BD.h"
@@ -67,5 +66,7 @@ public:
 	void changemove();
 	// reset the cur move
 	void resetmove();
+
+	~cell();
 };
 #endif

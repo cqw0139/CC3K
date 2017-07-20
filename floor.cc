@@ -25,7 +25,8 @@ floor::~floor(){
 }
 
 void floor::clearFloor() {
-    bos->level++;
+    if (bos != nullptr)
+        bos->level++;
 	numnpc = 0;
 	numpotion = 0;
 	numtreasure = 0;
@@ -33,10 +34,9 @@ void floor::clearFloor() {
 	{
 		for (int j = 0; j < 79; ++j){
 			removeinfo(i, j);
-			theFloor[i].pop_back();
+			//theFloor[i].pop_back();
 		}
 	}
-	curFloor++;
 }
 
 char floor::gettype(int r, int c) const{
@@ -162,6 +162,18 @@ void floor::initpc(int r, int c, pc* p){
     if(curFloor == 1){
         action += " Player character has spawned.";
     }
+    curFloor = 1;
+}
+
+void floor::setpc(int r, int c, pc* p){
+    person = p;
+    p->setrow(r);
+    p->setcol(c);
+    theFloor[r][c].setchartype('p', p, 1);
+    if(curFloor == 1){
+        action += " Player character has spawned.";
+    }
+    curFloor++;
 }
 
 void floor::init(){
@@ -181,9 +193,6 @@ void floor::init(){
 
 
 void floor::addinfo(int r, int c, info* newinfo){
-	//theNpc.emplace_back(newinfo);
-	//newnpc->setrow(r);
-	//newnpc->setcol(c);
 	string type = newinfo->gettype();
 	//cout << type << endl;
 	if (type == "human"){
@@ -234,7 +243,7 @@ void floor::initstair(int r, int c){
 	theFloor[r][c].setstair();
 }
 
-void floor::movechar(int direction){
+bool floor::movechar(int direction){
     int row = person->getrow();
     int col = person->getcol();
     char ch;
@@ -353,7 +362,8 @@ void floor::movechar(int direction){
     }
     else if (occ == 9) {
         action += " PC moves to the next floor.";
-			throw (occ);
+		//throw (occ);
+        return 1;
     }
     else if (occ == 2 || occ == 3){
         action += " There is a npc on the cell, PC needs to defeat it before PC moves to that cell.";
@@ -468,6 +478,7 @@ void floor::movechar(int direction){
         }
         action += ".";
     }
+    return 0;
 }
 
 void floor::movenpc(int r, int c, int direction){
@@ -525,8 +536,9 @@ void floor::movenpc(int r, int c, int direction){
 }
 
 void floor::removeinfo(int r, int c){
+    //info* temp = theFloor[r][c].getinfo();
 	theFloor[r][c].movechar();
-	//numnpc--;
+    //delete temp;
 }
 
 void floor::changemove(int r, int c){
@@ -675,15 +687,15 @@ ostream &operator<<(ostream &out, floor &f){
 						break;
 					}
 					case 'e':{
-						out << "e";
+						out << "E";
 						break;
 					}
 					case 'o':{
-						out << "o";
+						out << "O";
 						break;
 					}
 					case 'm':{
-						out << "m";
+						out << "M";
 						break;
 					}
 					case '\\':{
@@ -1128,30 +1140,6 @@ void floor::initBasicMap()
 void floor::setroom(int r, int c, int num){
     theFloor[r][c].setroom(num);
 }
-
-/*void floor::raceup(){
-    int lev = 0;
-    lev = person->getlevel();
-    if(lev == 2){
-        string typ = "";
-        typ = person->gettype();
-        if(typ == "shade"){
-            int a = person->gethp();
-            int b = person->getatk();
-            int c = person->getdef();
-            int g = person->getgold();
-            pc* newp = new darkmage(a,b,c,80);
-            newp->changegold(g);
-            int row = 0;
-            int col = 0;
-            getpcpos(row,col);
-            theFloor[row][col].setchartype('p',newp,1);
-//            delete person;
-            person = newp;
-            action += " PC Race Up !!! PC changes race to darkmage right now.";
-        }
-    }
-}*/
 
 void floor::settype(int r, int c, char type){
     theFloor[r][c].settype(type);

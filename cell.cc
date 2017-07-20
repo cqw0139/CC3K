@@ -63,3 +63,7 @@ void cell::changemove(){
 void cell::resetmove(){
 	move = 0;
 }
+
+cell::~cell(){
+	//delete curinfo;
+}

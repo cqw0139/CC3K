@@ -8,6 +8,4 @@
 
 #include "shadenative.h"
 
-shadenative::shadenative():
-skill("shadenative","")
-{}
+shadenative::shadenative(): skill("shadenative","") {}

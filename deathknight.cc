@@ -8,7 +8,7 @@
 
 #include "deathknight.h"
 
-deathknight::deathknight(): pc(180,30,10,"deathknight", 500){
+deathknight::deathknight(): pc(180,30,10,"deathknight", 50){
     skill* news = new deathknative;
     skilllist.push_back(news);
 }

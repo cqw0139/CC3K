@@ -73,6 +73,8 @@ public:
 	// initial a floor
 	void init();
 
+	void setpc(int r, int c, pc* p);
+
 	// init a pc at r anc c with pointer p
 	void initpc(int r, int c, pc* p);
 
@@ -89,7 +91,7 @@ public:
     void MerchantStartAttack();
 
 	// move the character to the given direction
-	void movechar(int direction);
+	bool movechar(int direction);
 
 	// randomly move npc to one of the 4 directions
 	void movenpc(int r, int c, int direction);

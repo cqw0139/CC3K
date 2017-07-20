@@ -1,0 +1,8 @@
+A5 Bonus
+the game logo and winning animation for the game
+we add skills for each race in the game
+use WASD to control the pc during the game
+add one new npc, which is called boss, if pc defeat boss, the floor stair will appear
+add two new races saber and death knight and they all have their native skills
+add some new attributes for pc, such as level, exp, mp. pc can use mp to use special skill cure
+pc can level up to get attributes increase and race up when pc achieve the level requirement

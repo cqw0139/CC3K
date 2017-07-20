@@ -22,4 +22,10 @@ void printinfo(std::string type, int level);
 
 char printpcinfo ();
 
+void printWin();
+
+void printLose();
+
+void printPowerUp();
+
 #endif

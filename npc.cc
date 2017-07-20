@@ -54,7 +54,7 @@ int npc::getcol() const{
     return col;
 }
 
-bool npc::isdead() const{
+bool npc::isdead() {
     return gethp() > 0;
 }
 

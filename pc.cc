@@ -90,8 +90,9 @@ void pc::levelup(string& action){
         action += " PC increases " + itos(atkup) + " ATK.";
         changedef(defup);
         action += " PC increases " + itos(defup) + " DEF.";
-        if(level == 2){
+        if(level == 4){
             if(type == "vampire"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Bloodseeker right now.";
                 type = "Bloodseeker";
                 level = 1;
@@ -100,6 +101,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill Bloodrage.";
             }else if(type == "goblin"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Alchemist right now.";
                 type = "Alchemist";
                 level = 1;
@@ -108,6 +110,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill handofMidas.";
             }else if(type == "troll"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Devil right now.";
                 type = "Devil";
                 level = 1;
@@ -116,6 +119,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill grow.";
             }else if(type == "drow"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Venomancer right now.";
                 type = "Venomancer";
                 level = 1;
@@ -124,6 +128,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill poisonbody.";
             }else if(type == "shade"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Dark Mage right now.";
                 type = "Dark Mage";
                 level = 1;
@@ -132,6 +137,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill luckyseven.";
             }else if(type == "deathknight"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Lich King right now.";
                 type = "Lich King";
                 level = 1;
@@ -140,6 +146,7 @@ void pc::levelup(string& action){
                 skilllist.push_back(news);
                 action += " PC learns a new skill frostmourne.";
             }else if(type == "saber"){
+                printPowerUp();
                 action += " PC Race Up !!! PC changes race to Royal Saber right now.";
                 type = "Royal Saber";
                 level = 1;
